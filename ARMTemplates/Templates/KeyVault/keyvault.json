@@ -1,0 +1,97 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "keyVaultName": {
+            "type": "string"
+        },
+        "appObjectId": {
+            "type": "array",
+            "metadata": {
+                "description": "Array Specifies the object Id of the services. Get using Get-AzureRmADUser or Get-AzureRmADServicePrincipal cmdlets."
+            }
+        },
+        "defaultNetworkAction":{
+            "type": "string",
+            "defaultValue": "Allow"
+        },
+        "secretsPermissions": {
+            "type": "array",
+            "defaultValue": [
+                "Get",
+                "List",
+                "Set",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore"
+            ],
+            "metadata": {
+                "description": "Permissions to keys in the vault. Valid values are: all, create, import, update, get, list, delete, backup, restore, encrypt, decrypt, wrapkey, unwrapkey, sign, and verify."
+            }
+        },
+        "certificatesPermissions": {
+            "type": "array",
+            "defaultValue": [
+                "Get",
+                "List",
+                "Import",
+                "Delete",
+                "Purge"
+            ],
+            "metadata": {
+                "description": "Permissions to keys in the vault. Valid values are: all, create, import, update, get, list, delete, backup, restore, encrypt, decrypt, wrapkey, unwrapkey, sign, and verify."
+            }
+        },
+        "iPRules":{
+            "type": "array",
+            "defaultValue": []
+        },
+        "virtualNetworkRules":{
+            "type": "array",
+            "defaultValue": []
+        }
+    },
+    "variables": {},
+    "resources": [{
+        "type": "Microsoft.KeyVault/vaults",
+        "name": "[parameters('keyVaultName')]",
+        "apiVersion": "2016-10-01",
+        "location": "[resourceGroup().location]",
+        "properties": {
+            "enabledForDeployment": false,
+            "enabledForTemplateDeployment": true,
+            "enabledForDiskEncryption": false,
+            "enableSoftDelete": true,
+            "tenantId": "[subscription().tenantId]",
+            "networkAcls": {
+                "bypass": "AzureServices",
+                "defaultAction": "[parameters('defaultNetworkAction')]",
+                "ipRules": "[parameters('iPRules')]",
+                "virtualNetworkRules": "[parameters('virtualNetworkRules')]"
+            },
+            "sku": {
+                "name": "standard",
+                "family": "A"
+            },
+            "copy": [{
+                "name": "accessPolicies",
+                "count": "[length(parameters('appObjectId'))]",
+                "input": {
+                    "tenantId": "[subscription().tenantId]",
+                    "objectId": "[parameters('appObjectId')[copyIndex('accessPolicies')]]",
+                    "permissions": {
+                        "secrets": "[parameters('secretsPermissions')]",
+                        "certificates": "[parameters('certificatesPermissions')]"
+                    }
+                }
+            }]
+        }
+    }],
+    "outputs": {
+        "keyVaultName": {
+            "type": "string",
+            "value": "[parameters('keyVaultName')]"
+        }
+    }
+}

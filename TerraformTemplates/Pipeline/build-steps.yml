@@ -1,0 +1,8 @@
+steps:
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Resource Terraform Tempaltes
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/TerraformTemplates/Templates'
+      ArtifactName: '$(Build.BuildNumber)'
+      publishLocation: 'Container'
+

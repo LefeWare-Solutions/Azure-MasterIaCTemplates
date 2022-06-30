@@ -1,0 +1,20 @@
+parameters:
+  - name: 'azureSubscriptionServiceConnection'
+    type: string
+    default: false
+
+steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      artifact: '$(Build.BuildNumber)'
+      path: $(Build.SourcesDirectory)/bin
+  
+
+  - task: AzureFileCopy@4
+    displayName: Publish Master Terraform Tempaltes to Blob Storage
+    inputs:
+      SourcePath: '$(Pipeline.Workspace)/$(Build.BuildNumber)'
+      azureSubscription: ${{ parameters.azureSubscriptionServiceConnection }}
+      Destination: 'AzureBlob'
+      storage: $(storageAccountName)
+      ContainerName: 'TerraformTemplates'

@@ -1,0 +1,8 @@
+steps:
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Resource ARM Tempalte
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/ARMTemplates/Templates'
+      ArtifactName: '$(Build.BuildNumber)'
+      publishLocation: 'Container'
+

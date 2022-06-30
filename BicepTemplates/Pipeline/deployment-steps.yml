@@ -1,0 +1,50 @@
+parameters:
+  - name: 'azureSubscriptionServiceConnection'
+    type: string
+    default: false
+
+steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      artifact: 'BicepTemplates'
+      targetPath: $(Build.SourcesDirectory)/bin/BicepTemplates
+   
+  # - task: UsePythonVersion@0
+  #   inputs:
+  #     versionSpec: '3.x'
+  #     architecture: 'x64'
+
+  # - bash: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
+  #   displayName: 'Upgrade Azure CLI'
+
+  - task: AzureCLI@2
+    displayName: Create Master Infrastructure Container Registry
+    inputs:
+      azureSubscription: ${{ parameters.azureSubscriptionServiceConnection }}
+      scriptType: 'ps'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az group create --name $resourceGroupName --location $(location)
+        az acr create --resource-group $resourceGroupName --name $acrName --sku Basic
+
+
+  - task: AzureCLI@2
+    displayName: 'Publish Master Bicep Template'
+    inputs:
+      azureSubscription: ${{ parameters.azureSubscriptionServiceConnection }}
+      scriptType: 'pscore'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az bicep install
+        $files = Get-ChildItem 'BicepTemplates\Templates'
+        foreach ($file in $files)
+        {
+          $baseName = $file.BaseName
+          $filePath = "BicepTemplates\Templates\" + $file.Name 
+          $version = '$(Build.BuildNumber)'
+          $url = "br:$(acrName).azurecr.io/bicep/modules/" + $baseName + ":" + $version
+
+          az bicep publish --file $filePath --target $url
+        }
+
+

@@ -1,0 +1,49 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+name: $(major).$(minor).$(Rev:r)
+
+trigger:
+  branches:
+    include:
+      - main
+      
+  paths:
+    include:
+      - TerraformTemplates/*
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  location: 'centralus'
+
+stages:
+
+  - stage: build
+    displayName: Build
+    jobs:
+      - job: Build
+        pool:
+          vmImage: windows-latest
+        steps:
+          - template: ./build-steps.yml
+
+                
+  - stage: "release_prd"
+    displayName: Release Production
+    dependsOn: ["build"]
+    condition: succeeded()
+    jobs:
+      - deployment: 'prd'
+        displayName: 'PRD'
+        pool:
+          vmImage: windows-latest
+        environment: 'prd'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: ./deployment-steps.yml
+                    
