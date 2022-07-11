@@ -9,9 +9,10 @@ TODO: Guide users through getting your code up and running on their own system. 
 4.	API references
 
 # Build and Test
-terraform init -backend-config=backend.conf
-terraform plan -var-file="dev-variables.tfvars"
-terraform apply -var-file="dev-variables.tfvars"
+Powershell:
+terraform init --backend-config=Demo/backend.conf
+terraform plan -var-file="Demo/dev-variables.tfvars"
+terraform apply -var-file="/Demo/dev-variables.tfvars"
 
 # Contribute
 TODO: Explain how other users and developers can contribute to make your code better. 

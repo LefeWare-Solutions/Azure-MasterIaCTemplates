@@ -13,6 +13,11 @@ variable "location" {
   description = ""
 }
 
+variable "tenant_id" {
+  type        = string
+  description = ""
+}
+
 variable "policies" {
   type = map(object({
     tenant_id               = string
@@ -28,7 +33,7 @@ variable "policies" {
 
 variable "secrets" {
   type = map(object({
-    name = string
+    secret_value = string
   }))
   description = "Define Azure Key Vault secrets"
   default = {}
