@@ -13,17 +13,15 @@ param evnvironmentPrefix string
 param location string = resourceGroup().location
 
 @description('Optional. The SKU name of the ACR to create.')
-param skuName string = 'Basic'
+param skuName string = 'Developer'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-resource symbolicname 'Microsoft.ApiManagement/service@2021-12-01-preview' = {
+resource APIM 'Microsoft.ApiManagement/service@2021-12-01-preview' = {
   name: '${organizationName}-apim-${evnvironmentPrefix}-${serviceName}'
   location: location
-  tags: {
-
-  }
+  tags: tags
   sku: {
     capacity: 1
     name: skuName

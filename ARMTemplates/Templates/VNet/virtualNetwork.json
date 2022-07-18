@@ -1,0 +1,57 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vnetName": {
+      "type": "string"
+    },
+     "vnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/16",
+      "metadata": {
+        "description": "Address prefix"
+      }
+    },
+    "subnetsConfiguration":{
+      "type": "array",
+      "defaultValue": []
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2020-06-01",
+      "name": "[parameters('vnetName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetAddressPrefix')]"
+          ]
+        },
+        "copy": [
+          {
+            "name": "subnets",
+            "count": "[length(parameters('subnetsConfiguration'))]",
+            "input": {
+                "name": "[parameters('subnetsConfiguration')[copyIndex('subnets')].name]",
+                "properties": {
+                    "addressPrefix": "[parameters('subnetsConfiguration')[copyIndex('subnets')].addressPrefix]",
+                    "delegations": "[parameters('subnetsConfiguration')[copyIndex('subnets')].delegations]",
+                    "serviceEndpoints": "[parameters('subnetsConfiguration')[copyIndex('subnets')].serviceEndpoints]"
+                }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs":{
+    "virtualNetworkId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+    }
+  }
+}

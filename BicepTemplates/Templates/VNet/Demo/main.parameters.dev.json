@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "organizationName": {
+      "value": "LWS"
+    },
+    "serviceName": {
+      "value": "common"
+    },
+    "environmentPrefix":{
+      "value": "dev"
+    },
+    "addressSpace":{
+      "value": "10.0.0.0/16"
+    },
+    "subnets": {
+      "value": [
+        {
+          "name": "AppGWSubnet",
+          "subnetPrefix": "10.0.0.0/24"
+        },
+        {
+          "name": "ASESubnet",
+          "subnetPrefix": "10.0.1.0/24"
+        }
+    ]
+  }
+  }
+}

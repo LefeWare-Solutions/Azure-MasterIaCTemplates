@@ -1,22 +1,35 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+The following project contains Infrasructure as Code (IaC) Templates in the following 3 languages:
+1. Azure Resource Manager (ARM)
+2. BICEP
+3. Terraform
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+We at LefeWare Solutions leverage these templates on multiple projects
 
-# Build and Test
+# Why you should always use Infrastructure as Code for deploying
+We at LefeWare Solutions believe strongly that IaC should ALWAYS be used for deploying infrastructure resources for the following reasons:
+1. Avoid human error and redundancy
+2. Automate infrastructure deployments
+3. Easily reproduce deployments in multiple environments
+4. IaC code is checked into source control and therefore you can easily 
+
+
+# Which IAC language should I leverage?
+
+##ARM
+
+##BICEP
+
+##Terraform
+
+---
+# Publishing Pipelines
+
+
 terraform init -backend-config=backend.conf
 terraform plan -var-file="dev-variables.tfvars"
 terraform apply -var-file="dev-variables.tfvars"
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+---
+# Leveraging these tempaltes from your project
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)

@@ -1,4 +1,3 @@
-
 @description('Required. The name of the organization.')
 param organizationName string
 
