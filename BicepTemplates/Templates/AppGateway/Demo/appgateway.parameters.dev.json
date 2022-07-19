@@ -1,0 +1,55 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "organizationName": {
+      "value": "lws"
+    },
+    "serviceName": {
+      "value": "common"
+    },
+    "environmentPrefix":{
+      "value": "dev"
+    },
+   "vnetName":{
+     "value": "lws-eastus-vnet-dev-common"
+    },
+    "subnetName":{
+      "value": "AppGWSubnet"
+    },
+    "backendAddressPools":{
+      "value": [
+        {
+          "name": "gatewaybackend",
+          "properties": {
+            "backendAddresses": [
+              {
+                "fqdn": "api.lefewaresolutions.com"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "backendHttpSettingsCollection":{
+      "value": [
+        {
+          "name": "apimPoolGatewaySetting",
+          "properties": {
+            "port": 443,
+            "protocol": "Https",
+            "cookieBasedAffinity": "Disabled",
+            "pickHostNameFromBackendAddress": true,
+            "requestTimeout": 180
+          }
+        }
+      ]
+    },
+    "httpListenerHostName":{
+      "value": "*.lefewaresolutions.com"
+    },
+    "applicationGatewayTrustedRootBase64EncodedCertificate": {
+      "value": ""
+    }
+  }
+}

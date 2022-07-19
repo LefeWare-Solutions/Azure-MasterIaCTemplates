@@ -21,10 +21,10 @@ param internalLoadBalancingMode int = 3
 param vNetResourceGroupName string = resourceGroup().name
 
 @description('Required. The Virtual Network (vNet) Name.')
-param virtualNetworkName string = 'vnet-asev3'
+param virtualNetworkName string
 
 @description('Required. The subnet Name of ASEv3.')
-param subnetName string = 'snet-asev3'
+param subnetName string
 
 
 

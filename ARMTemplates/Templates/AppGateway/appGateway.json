@@ -1,0 +1,192 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appGwName": {
+      "type": "string"
+    },
+    "publicIPAddressName":{
+      "type": "string"
+    },
+    "skuType":{
+      "type": "string",
+      "defaultValue":"Standard_v2"
+    },
+    "backEndPoolFQDN":{
+      "type": "string"
+    },
+    "subnetName":{
+      "type": "string"
+    },
+    "vNetName":{
+      "type": "string"
+    },
+    "vNetResourceGroupName":{
+      "type":"string"
+    }
+  },
+  "variables": {
+    "frontendPortName": "appGWFrontendPort",
+    "listenerName": "appGWListener1",
+    "routingRuleName": "appGWRule1",
+    "backendHttpSettingsName": "appGWBackendHttpSettings",
+    "backendPoolSettingsName":"appGWAPIMBackEndPoolSettings"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2020-06-01",
+      "name": "[parameters('publicIPAddressName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+        "publicIPAddressVersion": "IPv4",
+        "publicIPAllocationMethod": "Static",
+        "idleTimeoutInMinutes": 4
+      }
+    },
+    {
+      "type": "Microsoft.Network/applicationGateways",
+      "apiVersion": "2020-06-01",
+      "name": "[parameters('appGwName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [],
+      "properties": {
+        "sku": {
+          "name": "[parameters('skuType')]",
+          "tier": "[parameters('skuType')]"
+        },
+        "autoscaleConfiguration": {
+            "minCapacity": 0,
+            "maxCapacity": 3
+        },
+        "gatewayIPConfigurations": [
+          {
+            "name": "appGatewayIpConfig",
+            "properties": {
+              "subnet": {
+                "id": "[resourceId(parameters('vNetResourceGroupName'),'Microsoft.Network/virtualNetworks/subnets', parameters('vNetName'), parameters('subnetName'))]"
+              }
+            }
+          }
+        ],
+        "frontendIPConfigurations": [
+          {
+            "name": "appGwPublicFrontendIp",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddressName'))]"
+              }
+            }
+          }
+        ],
+        "frontendPorts": [
+          {
+            "name": "[variables('frontendPortName')]",
+            "properties": {
+              "port": 80
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "[variables('backendPoolSettingsName')]",
+            "properties": {
+              "backendAddresses": [
+                {
+                  "fqdn": "[parameters('backEndPoolFQDN')]"
+                }
+              ]
+            }
+          }
+        ],
+        "backendHttpSettingsCollection": [
+          {
+            "name": "[variables('backendHttpSettingsName')]",
+            "properties": {
+              "port": 443,
+              "protocol": "Https",
+              "cookieBasedAffinity": "Disabled",
+              "pickHostNameFromBackendAddress": true,
+              "requestTimeout": 20
+            }
+          }
+        ],
+        "httpListeners": [
+          {
+            "name": "[variables('listenerName')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/applicationGateways/frontendIPConfigurations', parameters('appGwName'), 'appGwPublicFrontendIp')]"
+              },
+              "frontendPort": {
+                "id": "[resourceId('Microsoft.Network/applicationGateways/frontendPorts', parameters('appGwName'), variables('frontendPortName'))]"
+              },
+              "protocol": "Http",
+              "requireServerNameIndication": false
+            }
+          }
+        ],
+        "requestRoutingRules": [
+          {
+            "name": "[variables('routingRuleName')]",
+            "properties": {
+              "ruleType": "Basic",
+              "httpListener": {
+                "id": "[resourceId('Microsoft.Network/applicationGateways/httpListeners', parameters('appGwName'), variables('listenerName'))]"
+              },
+              "backendAddressPool": {
+                "id": "[resourceId('Microsoft.Network/applicationGateways/backendAddressPools', parameters('appGwName'), variables('backendPoolSettingsName'))]"
+              },
+              "backendHttpSettings": {
+                "id": "[resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', parameters('appGwName'),  variables('backendHttpSettingsName'))]"
+              }
+            }
+          }
+        ],
+        "enableHttp2": false
+      }
+    }
+    // {
+    //   "type": "microsoft.insights/metricAlerts",
+    //   "apiVersion": "2018-03-01",
+    //   "name": "[concat('AppGateway Backend Host Unreachable - ', parameters('appGwName'))]",
+    //   "location": "global",
+    //   "properties": {
+    //       "description": "Application Gateway Backend Host is unreachable",
+    //       "severity": 3,
+    //       "enabled": true,
+    //       "scopes": [
+    //         "[resourceId('Microsoft.Network/applicationGateways', parameters('appGwName'))]"
+    //       ],
+    //       "evaluationFrequency": "PT1M",
+    //       "windowSize": "PT1M",
+    //       "criteria": {
+    //           "allOf": [
+    //               {
+    //                 "threshold": 1,
+    //                 "name": "Metric1",
+    //                 "metricNamespace": "Microsoft.Network/applicationGateways",
+    //                 "metricName": "HealthyHostCount",
+    //                 "operator": "LessThan",
+    //                 "timeAggregation": "Average",
+    //                 "criterionType": "StaticThresholdCriterion"
+    //               }
+    //           ],
+    //           "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+    //       },
+    //       "autoMitigate": false,
+    //       "targetResourceType": "Microsoft.Network/applicationGateways",
+    //       "actions": [
+    //         {
+    //             "actionGroupId": "[parameters('actionGroupId')]",
+    //             "webHookProperties": {}
+    //         }
+    //       ]
+    //   }
+    // }
+  ]
+}

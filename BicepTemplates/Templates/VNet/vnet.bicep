@@ -16,7 +16,6 @@ param addressSpace string
 @description('Optional. The SKU name of the ACR to create.')
 param subnets array
 
-
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -39,5 +38,6 @@ resource Subnets 'Microsoft.Network/virtualNetworks/subnets@2020-11-01' = [for (
   parent: VNet
   properties: {
     addressPrefix: sn.subnetPrefix
+    delegations: sn.delegations
   }
 }]

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "organizationName": {
+      "value": ""
+    },
+    "serviceName": {
+      "value": ""
+    },
+    "environmentPrefix": {
+      "value": ""
+    },
+    "vnetName": {
+      "value": ""
+    },
+    "subnetName": {
+      "value": ""
+    },
+    "apiManagementPublisherName": {
+      "value": ""
+    },
+    "apiManagementPublisherEmailAddress": {
+      "value": ""
+    },
+    "apiManagementPortalCustomHostname": {
+      "value": ""
+    },
+    "apiManagementProxyCustomHostname": {
+      "value": ""
+    },
+    "apiManagementManagementCustomHostname": {
+      "value": ""
+    },
+    "apiManagementPortalCertificatePassword": {
+      "value": ""
+    },
+    "apiManagementPortalCustomHostnameBase64EncodedCertificate": {
+      "value": ""
+    },
+    "apiManagementProxyCertificatePassword": {
+      "value": ""
+    },
+    "apiManagementProxyCustomHostnameBase64EncodedCertificate": {
+      "value": ""
+    },
+    "apiManagementManagementCertificatePassword": {
+      "value": ""
+    },
+    "apiManagementManagementCustomHostnameBase64EncodedCertificate": {
+      "value": ""
+    }
+  }
+}

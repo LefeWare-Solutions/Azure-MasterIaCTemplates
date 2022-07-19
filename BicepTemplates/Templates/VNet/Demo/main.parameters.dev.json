@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "organizationName": {
-      "value": "LWS"
+      "value": "lws"
     },
     "serviceName": {
       "value": "common"
@@ -18,11 +18,25 @@
       "value": [
         {
           "name": "AppGWSubnet",
-          "subnetPrefix": "10.0.0.0/24"
+          "subnetPrefix": "10.0.0.0/27",
+          "delegations": []
+        },
+        {
+          "name": "APIMSubnet",
+          "subnetPrefix": "10.0.1.0/27",
+          "delegations": []
         },
         {
           "name": "ASESubnet",
-          "subnetPrefix": "10.0.1.0/24"
+          "subnetPrefix": "10.0.2.0/27",
+          "delegations": [
+            {
+              "name": "Microsoft.Web.hostingEnvironments",
+              "properties": {
+                "serviceName": "Microsoft.Web/hostingEnvironments"
+              }
+            }
+          ]
         }
     ]
   }
