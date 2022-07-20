@@ -20,16 +20,26 @@ param subnetName string
 
 var appGatewaySubnetId = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
 
-// ---- Application Gateway parameters ----
-@description('Optional')
-param appGatewaySKU string = 'Standard_v2'
-
+// ---- SSL Settings----
 @description('Used by Application Gateway, the Base64 encoded CER/CRT certificate corresponding to the root certificate for Application Gateway.')
 @secure()
 param applicationGatewayTrustedRootBase64EncodedCertificate string
 
 @description('Flag to indicate if certificates used by Application Gateway were signed by a public Certificate Authority.')
 param useWellKnownCertificateAuthority bool = true
+
+@description('Used by Application Gateway, the Base64 encoded PFX certificate corresponding to the API Management custom proxy domain name.')
+@secure()
+param apiManagementGatewayCustomHostnameBase64EncodedCertificate string
+
+@description('Password for corresponding to the certificate for the API Management custom proxy domain name.')
+@secure()
+param apiManagementGatewayCertificatePassword string
+
+
+// ---- Application Gateway parameters ----
+@description('Optional')
+param appGatewaySKU string = 'Standard_v2'
 
 @description('Optional')
 param sslCertificates array = []
@@ -38,7 +48,7 @@ param sslCertificates array = []
 param backendAddressPools array
 
 @description('Required')
-param httpListenerHostName string
+param gatewayListenerHostName string
 
 @description('Optional')
 param requestRoutingRules array = []
@@ -140,7 +150,15 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2020-11-01' =
         }
       }
     ]
-    sslCertificates: sslCertificates
+    sslCertificates: [
+      {
+        name: 'gatewaycert'
+        properties: {
+          data:apiManagementGatewayCustomHostnameBase64EncodedCertificate
+          password: apiManagementGatewayCertificatePassword
+        }
+      }
+    ]
     trustedRootCertificates: useWellKnownCertificateAuthority ? null : applicationGatewayTrustedRootCertificates
     frontendIPConfigurations: [
       {
@@ -157,7 +175,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2020-11-01' =
       {
         name: 'port01'
         properties: {
-          port: 80
+          port: 443
         }
       }
     ]
@@ -173,9 +191,12 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2020-11-01' =
           frontendPort: {
             id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', applicationGatewayName, 'port01')
           }
-          protocol: 'Http'
-          hostName: httpListenerHostName
-          requireServerNameIndication: false
+          protocol: 'Https'
+          sslCertificate: {
+            id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', applicationGatewayName, 'gatewaycert')
+          }
+          hostName: gatewayListenerHostName
+          requireServerNameIndication: true
         }
       }
     ]

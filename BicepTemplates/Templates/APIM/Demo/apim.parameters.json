@@ -3,34 +3,34 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "organizationName": {
-      "value": ""
+      "value": "lws"
     },
     "serviceName": {
-      "value": ""
+      "value": "common"
     },
-    "environmentPrefix": {
-      "value": ""
+    "environmentPrefix":{
+      "value": "dev"
     },
-    "vnetName": {
-      "value": ""
+   "vnetName":{
+     "value": "lws-eastus-vnet-dev-common"
     },
-    "subnetName": {
-      "value": ""
+    "subnetName":{
+      "value": "APIMSubnet"
     },
     "apiManagementPublisherName": {
-      "value": ""
+      "value": "LWS"
     },
     "apiManagementPublisherEmailAddress": {
-      "value": ""
+      "value": "admin@lefewaresolutions.com"
     },
     "apiManagementPortalCustomHostname": {
-      "value": ""
+      "value": "portal.lefewaresolutions.com"
     },
     "apiManagementProxyCustomHostname": {
-      "value": ""
+      "value": "api.lefewaresolutions.com"
     },
     "apiManagementManagementCustomHostname": {
-      "value": ""
+      "value": "management.lefewaresolutions.com"
     },
     "apiManagementPortalCertificatePassword": {
       "value": ""

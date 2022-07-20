@@ -17,6 +17,12 @@
     "subnetName":{
       "value": "AppGWSubnet"
     },
+    "apiManagementGatewayCustomHostnameBase64EncodedCertificate":{
+      "value": ""
+    },
+    "apiManagementGatewayCertificatePassword": {
+      "value": ""
+    },
     "backendAddressPools":{
       "value": [
         {
@@ -45,11 +51,30 @@
         }
       ]
     },
-    "httpListenerHostName":{
-      "value": "*.lefewaresolutions.com"
+    "gatewayListenerHostName":{
+      "value": "api.lefewaresolutions.com"
+    },
+    "probes":{
+      "value": [
+        {
+          "name": "apimgatewayprobe",
+          "properties": {
+            "protocol": "Https",
+            "host": "apiManagementProxyCustomHostname",
+            "path": "/status-0123456789abcdef",
+            "interval": 30,
+            "timeout": 120,
+            "unhealthyThreshold": 8,
+            "pickHostNameFromBackendHttpSettings": false,
+            "minServers": 0
+          }
+        }
+      ]
     },
     "applicationGatewayTrustedRootBase64EncodedCertificate": {
-      "value": ""
+      "value": "GEN-SELFSIGNED-CERT-CERDATA"
     }
   }
 }
+
+//https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.web/private-webapp-with-app-gateway-and-apim
