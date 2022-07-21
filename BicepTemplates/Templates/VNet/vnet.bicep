@@ -13,7 +13,7 @@ param location string = resourceGroup().location
 @description('Required. The AddressSpace that contains an array of IP address ranges that can be used by subnets.')
 param addressSpace string
 
-@description('Optional. The SKU name of the ACR to create.')
+@description('Required. The subnets to add to the vnet')
 param subnets array
 
 @description('Optional. Tags of the resource.')
