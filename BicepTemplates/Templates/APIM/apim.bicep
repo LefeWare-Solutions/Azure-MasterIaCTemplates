@@ -94,7 +94,7 @@ resource nsgApiManagemnt 'Microsoft.Network/networkSecurityGroups@2021-02-01' = 
 
 // ---- Azure API Management and related API operations ----
 resource apiManagementInstance 'Microsoft.ApiManagement/service@2020-12-01' = {
-  name: '${organizationName}-${location}-nsg-${environmentPrefix}-${serviceName}'
+  name: '${organizationName}-${location}-apim-${environmentPrefix}-${serviceName}'
   location: location
   sku: {
     capacity: 1

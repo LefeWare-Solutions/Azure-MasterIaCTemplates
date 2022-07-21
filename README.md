@@ -4,7 +4,7 @@ The following project contains Infrasructure as Code (IaC) Templates in the foll
 2. BICEP
 3. Terraform
 
-We at LefeWare Solutions leverage these templates on multiple projects
+We at LefeWare Solutions leverage these centralized templates on multiple projects
 
 # Why you should always use Infrastructure as Code for deploying
 We at LefeWare Solutions believe strongly that IaC should ALWAYS be used for deploying infrastructure resources for the following reasons:
@@ -14,13 +14,13 @@ We at LefeWare Solutions believe strongly that IaC should ALWAYS be used for dep
 4. IaC code is checked into source control and therefore you can easily 
 
 
-# Which IAC language should I leverage?
+# Which IAC language should I use?
 
-##ARM
+## ARM
 
-##BICEP
+## BICEP
 
-##Terraform
+## Terraform
 
 ---
 # Publishing Pipelines

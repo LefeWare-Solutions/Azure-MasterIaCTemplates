@@ -18,6 +18,14 @@
           "vnetName": "lws-eastus-vnet-d-common2"
         }
       ]
+    },
+    "dnsRecords": {
+      "value": [
+        {
+          "name": "api.lefewaresolutions.com",
+          "ipAddress": "10.1.1.5"
+        }
+      ]
     }
   }
 }

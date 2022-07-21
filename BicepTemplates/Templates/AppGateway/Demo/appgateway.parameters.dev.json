@@ -9,10 +9,10 @@
       "value": "common"
     },
     "environmentPrefix":{
-      "value": "dev"
+      "value": "d"
     },
    "vnetName":{
-     "value": "lws-eastus-vnet-dev-common"
+     "value": "lws-eastus-vnet-d-common1"
     },
     "subnetName":{
       "value": "AppGWSubnet"

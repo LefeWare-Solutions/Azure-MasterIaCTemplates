@@ -1,4 +1,4 @@
-$resourceGroupName = "lws-rg-dev-common"
+$resourceGroupName = "lws-rg-d-common"
 
 az deployment group create `
   --resource-group $resourceGroupName `
