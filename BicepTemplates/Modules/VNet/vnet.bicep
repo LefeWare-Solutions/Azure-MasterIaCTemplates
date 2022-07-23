@@ -1,11 +1,5 @@
 @description('Required. The name of the organization.')
-param organizationName string
-
-@description('Required. The name of the ACR service to create.')
-param serviceName string
-
-@description('Required. The environment short form name.')
-param environmentPrefix string
+param name string
 
 @description('Optional. The location of the service to create.')
 param location string = resourceGroup().location
@@ -20,7 +14,7 @@ param subnets array
 param tags object = {}
 
 resource VNet 'Microsoft.Network/virtualNetworks@2021-08-01' = {
-  name: '${organizationName}-${location}-vnet-${environmentPrefix}-${serviceName}'
+  name: name
   location: location
   tags: tags
   properties: {

@@ -1,0 +1,78 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentPrefix":{
+      "value": "d"
+    },
+    "addressSpace":{
+      "value": "10.0.0.0/16"
+    },
+    "subnets": {
+      "value": [
+        {
+          "name": "AppGWSubnet",
+          "subnetPrefix": "10.0.0.0/27",
+          "delegations": []
+        }
+      ]
+    },
+    "apiManagementGatewayCustomHostnameBase64EncodedCertificate":{
+      "value": ""
+    },
+    "apiManagementGatewayCertificatePassword": {
+      "value": ""
+    },
+    "backendAddressPools":{
+      "value": [
+        {
+          "name": "gatewaybackend",
+          "properties": {
+            "backendAddresses": [
+              {
+                "fqdn": "api.lefewaresolutions.com"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "backendHttpSettingsCollection":{
+      "value": [
+        {
+          "name": "apimPoolGatewaySetting",
+          "properties": {
+            "port": 443,
+            "protocol": "Https",
+            "cookieBasedAffinity": "Disabled",
+            "pickHostNameFromBackendAddress": true,
+            "requestTimeout": 180
+          }
+        }
+      ]
+    },
+    "gatewayListenerHostName":{
+      "value": "api.lefewaresolutions.com"
+    },
+    "probes":{
+      "value": [
+        {
+          "name": "apimgatewayprobe",
+          "properties": {
+            "protocol": "Https",
+            "host": "apiManagementProxyCustomHostname",
+            "path": "/status-0123456789abcdef",
+            "interval": 30,
+            "timeout": 120,
+            "unhealthyThreshold": 8,
+            "pickHostNameFromBackendHttpSettings": false,
+            "minServers": 0
+          }
+        }
+      ]
+    },
+    "applicationGatewayTrustedRootBase64EncodedCertificate": {
+      "value": "GEN-SELFSIGNED-CERT-CERDATA"
+    }
+  }
+}

@@ -15,7 +15,7 @@ param location string = resourceGroup().location
 @description('Required. The Virtual Network (vNet) Name.')
 param vnetName string
 
-@description('Required. The subnet Name of ASEv3.')
+@description('Required. The subnet Name of AppGW.')
 param subnetName string
 
 var appGatewaySubnetId = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
