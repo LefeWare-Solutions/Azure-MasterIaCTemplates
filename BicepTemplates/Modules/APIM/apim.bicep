@@ -1,11 +1,8 @@
-@description('Required. The name of the organization.')
-param organizationName string
-
 @description('Required. The name of the APIM service to create.')
-param serviceName string
+param apimName string
 
-@description('Required. The environment short form name.')
-param environmentPrefix string
+@description('Required. The name of the NSG name service to create.')
+param nsgName string
 
 @description('Optional. The location of the service to create.')
 param location string = resourceGroup().location
@@ -17,17 +14,18 @@ param location string = resourceGroup().location
 ])
 param apiManagementSku string = 'Developer'
 
-// ---- Network Settings----
+// #region ---- Network Settings----
 @description('Required. The Virtual Network (vNet) Name.')
 param vnetName string
 
 @description('Required. The subnet Name of APIM.')
 param subnetName string
 
-var apimSubnetId = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
+var vnetId = resourceId('Microsoft.Network/virtualNetworks', vnetName)
+var apimSubnetId = '${vnetId}/subnets/${subnetName}' 
+// #endregion
 
-
-// ---- Azure API Management parameters ----
+// #region ---- Azure API Management parameters ----
 @description('A unique name for the API Management service. The service name refers to both the service and the corresponding Azure resource. The service name is used to generate a default domain name: <name>.azure-api.net.')
 param apiManagementPublisherName string
 
@@ -67,10 +65,10 @@ param apiManagementManagementCertificatePassword string
 @description('Used by Application Gateway, the Base64 encoded PFX certificate corresponding to the API Management custom management domain name.')
 @secure()
 param apiManagementManagementCustomHostnameBase64EncodedCertificate string
-
+// #endregion
 
 resource nsgApiManagemnt 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
-  name: '${organizationName}-${location}-nsg-${environmentPrefix}-${serviceName}'
+  name: nsgName
   location: location
   properties: {
     securityRules: [
@@ -94,7 +92,7 @@ resource nsgApiManagemnt 'Microsoft.Network/networkSecurityGroups@2021-02-01' = 
 
 // ---- Azure API Management and related API operations ----
 resource apiManagementInstance 'Microsoft.ApiManagement/service@2020-12-01' = {
-  name: '${organizationName}-${location}-apim-${environmentPrefix}-${serviceName}'
+  name: apimName
   location: location
   sku: {
     capacity: 1

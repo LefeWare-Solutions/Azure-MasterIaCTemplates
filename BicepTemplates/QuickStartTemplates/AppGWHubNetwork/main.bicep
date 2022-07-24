@@ -11,6 +11,9 @@ param addressSpace string = '10.0.0.0/16'
 @description('Required. The subnets to add to the vnet')
 param subnets array
 
+@description('Optional. Tags of the resource.')
+param tags object = {}
+
 // ---- SSL Parameters----
 @description('Used by Application Gateway, the Base64 encoded CER/CRT certificate corresponding to the root certificate for Application Gateway.')
 @secure()
@@ -24,6 +27,7 @@ param apiManagementGatewayCustomHostnameBase64EncodedCertificate string
 @secure()
 param apiManagementGatewayCertificatePassword string
 
+// ---- AppGW Parameters----
 @description('Required')
 param backendAddressPools array
 
@@ -33,13 +37,17 @@ param gatewayListenerHostName string
 @description('Required')
 param backendHttpSettingsCollection array
 
-@description('Optional. Tags of the resource.')
-param tags object = {}
+@description('Required')
+param probes array
 
 // ---- Variables----
 var organizationName = 'lws'
 var serviceName = 'app1'
 var vnetName = '${organizationName}-${location}-vnet-${environmentPrefix}-${serviceName}'
+var appGatewayPIPName = '${organizationName}-${location}-pip-${environmentPrefix}-${serviceName}'
+var nsgAppGatewayName = '${organizationName}-${location}-nsg-${environmentPrefix}-${serviceName}'
+var applicationGatewayName = '${organizationName}-${location}-appgw-${environmentPrefix}-${serviceName}'
+
 
 // ---- Modules----
 module Network '../../Modules/VNet/vnet.bicep' = {
@@ -57,17 +65,18 @@ module AppGW '../../Modules/AppGateway/appgateway.bicep' = {
   name: 'AppGW'
   params: {
     location: location
+    appGatewayPIPName: appGatewayPIPName
+    applicationGatewayName: applicationGatewayName
+    nsgAppGatewayName: nsgAppGatewayName
+    subnetName: 'AppGWSubnet'
+    vnetName:vnetName
     apiManagementGatewayCertificatePassword:apiManagementGatewayCertificatePassword
     apiManagementGatewayCustomHostnameBase64EncodedCertificate:apiManagementGatewayCustomHostnameBase64EncodedCertificate
     applicationGatewayTrustedRootBase64EncodedCertificate:applicationGatewayTrustedRootBase64EncodedCertificate
     backendAddressPools:backendAddressPools
     backendHttpSettingsCollection:backendHttpSettingsCollection
-    environmentPrefix:environmentPrefix
     gatewayListenerHostName: gatewayListenerHostName
-    organizationName:organizationName
-    serviceName: serviceName
-    subnetName: 'AppGWSubnet'
-    vnetName:vnetName
+    probes: probes
   }
 }
 

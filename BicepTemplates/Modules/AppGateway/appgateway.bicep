@@ -1,15 +1,5 @@
-@description('Required. The name of the organization.')
-param organizationName string
-
-@description('Required. The name of the ACR service to create.')
-param serviceName string
-
-@description('Required. The environment short form name.')
-param environmentPrefix string
-
 @description('Optional. The location of the service to create.')
 param location string = resourceGroup().location
-
 
 // ---- Network Settings----
 @description('Required. The Virtual Network (vNet) Name.')
@@ -59,11 +49,13 @@ param backendHttpSettingsCollection array
 @description('Optional')
 param probes array = []
 
-
 // ---- Resource Names----
-var appGatewayPIPName = '${organizationName}-${location}-pip-${environmentPrefix}-${serviceName}'
-var nsgAppGatewayName = '${organizationName}-${location}-nsg-${environmentPrefix}-${serviceName}'
-var applicationGatewayName = '${organizationName}-${location}-appgw-${environmentPrefix}-${serviceName}'
+@description('Required')
+param appGatewayPIPName string
+@description('Required')
+param nsgAppGatewayName string
+@description('Required')
+param applicationGatewayName string
 
 
 var applicationGatewayTrustedRootCertificates = [

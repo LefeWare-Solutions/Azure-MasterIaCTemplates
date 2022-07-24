@@ -1,21 +1,21 @@
 @description('Set the local VNet name')
-param existingLocalVirtualNetworkName string
+param localVirtualNetworkName string
 
 @description('Set the remote VNet name')
-param existingRemoteVirtualNetworkName string
+param remoteVirtualNetworkName string
 
 @description('Sets the remote VNet Resource group')
-param existingRemoteVirtualNetworkResourceGroupName string
+param remoteVirtualNetworkResourceGroupName string
 
-resource existingLocalVirtualNetworkName_peering_to_remote_vnet 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
-  name: '${existingLocalVirtualNetworkName}/peering-to-remote-vnet'
+resource localVirtualNetworkName_peering_to_remote_vnet 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
+  name: '${localVirtualNetworkName}/peering-to-remote-vnet'
   properties: {
     allowVirtualNetworkAccess: true
     allowForwardedTraffic: false
     allowGatewayTransit: false
     useRemoteGateways: false
     remoteVirtualNetwork: {
-      id: resourceId(existingRemoteVirtualNetworkResourceGroupName, 'Microsoft.Network/virtualNetworks', existingRemoteVirtualNetworkName)
+      id: resourceId(remoteVirtualNetworkResourceGroupName, 'Microsoft.Network/virtualNetworks', remoteVirtualNetworkName)
     }
   }
 }

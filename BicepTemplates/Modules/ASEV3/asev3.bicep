@@ -1,11 +1,5 @@
 @description('Required. The name of the organization.')
-param organizationName string
-
-@description('Required. The name of the ACR service to create.')
-param serviceName string
-
-@description('Required. The environment short form name.')
-param environmentPrefix string
+param aseName string
 
 @description('Required. Location for all resources.')
 param location string = resourceGroup().location
@@ -21,22 +15,22 @@ param internalLoadBalancingMode int = 3
 param vNetResourceGroupName string = resourceGroup().name
 
 @description('Required. The Virtual Network (vNet) Name.')
-param virtualNetworkName string
+param vnetName string
 
 @description('Required. The subnet Name of ASEv3.')
 param subnetName string
 
-
-
-var subnetId = resourceId(vNetResourceGroupName, 'Microsoft.Network/virtualNetworks/subnets', virtualNetworkName, subnetName)
-
 @description('Required. Dedicated host count of ASEv3.')
 param dedicatedHostCount string = '0'
+
+var subnetId = resourceId(vNetResourceGroupName, 'Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
+
+
 
 
 
 resource asev3 'Microsoft.Web/hostingEnvironments@2020-12-01' = {
-  name:  '${organizationName}-${location}-vnet-${environmentPrefix}-${serviceName}'
+  name:  aseName
   location: location
   kind: 'ASEV3'
   properties: {

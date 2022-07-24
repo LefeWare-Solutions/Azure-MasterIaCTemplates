@@ -2,20 +2,29 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "serviceName": {
-      "value": "common"
+    "environmentPrefix": {
+      "value": "d"
     },
-   "vnetName":{
-     "value": "lws-eastus-vnet-d-common2"
-    },
-    "subnetName":{
-      "value": "APIMSubnet"
-    },
-    "apiManagementPublisherName": {
-      "value": "LWS"
-    },
-    "apiManagementPublisherEmailAddress": {
-      "value": "admin@lefewaresolutions.com"
+    "subnets": {
+      "value": [
+        {
+          "name": "APIMSubnet",
+          "subnetPrefix": "10.1.1.0/27",
+          "delegations": []
+        },
+        {
+          "name": "ASESubnet",
+          "subnetPrefix": "10.1.2.0/27",
+          "delegations": [
+            {
+              "name": "Microsoft.Web.hostingEnvironments",
+              "properties": {
+                "serviceName": "Microsoft.Web/hostingEnvironments"
+              }
+            }
+          ]
+        }
+      ]
     },
     "apiManagementPortalCustomHostname": {
       "value": "portal.lefewaresolutions.com"
