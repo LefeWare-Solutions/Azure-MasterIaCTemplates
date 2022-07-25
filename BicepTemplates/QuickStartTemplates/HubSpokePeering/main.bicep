@@ -8,11 +8,12 @@ param appSpokeResourceGroup string
 
 // ---- Private DNS ----
 param dnsRecords array
-param vnetLinks string
+param vnetLinks array
 
 // ---- Modules----
 module NetworkPeeringHubToSpoke '../../Modules/VNet/vnetpeering.bicep' = {
   name: 'networkpeeringhubtospoke'
+  scope: resourceGroup(appGWHubResourceGroup)
   params:{
     localVirtualNetworkName: appGWHubVNet
     remoteVirtualNetworkName: appSpokeVNet
@@ -22,6 +23,7 @@ module NetworkPeeringHubToSpoke '../../Modules/VNet/vnetpeering.bicep' = {
 
 module NetworkPeeringAppSpokeToHub '../../Modules/VNet/vnetpeering.bicep' = {
   name: 'networkpeeringappspoketohb'
+  scope: resourceGroup(appSpokeResourceGroup)
   params:{
     localVirtualNetworkName: appSpokeVNet
     remoteVirtualNetworkName: appGWHubVNet

@@ -1,4 +1,4 @@
-$resourceGroupName="lws-rg-d-common"
+$resourceGroupName="lws-rg-d-appgwhub"
 az group create --name $resourceGroupName --location eastus
 
 az deployment group create  `

@@ -19,3 +19,4 @@ resource localVirtualNetworkName_peering_to_remote_vnet 'Microsoft.Network/virtu
     }
   }
 }
+

@@ -42,7 +42,7 @@ param probes array
 
 // ---- Variables----
 var organizationName = 'lws'
-var serviceName = 'app1'
+var serviceName = 'appgwhub'
 var vnetName = '${organizationName}-${location}-vnet-${environmentPrefix}-${serviceName}'
 var appGatewayPIPName = '${organizationName}-${location}-pip-${environmentPrefix}-${serviceName}'
 var nsgAppGatewayName = '${organizationName}-${location}-nsg-${environmentPrefix}-${serviceName}'
