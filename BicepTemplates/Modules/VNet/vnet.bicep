@@ -33,5 +33,6 @@ resource Subnets 'Microsoft.Network/virtualNetworks/subnets@2020-11-01' = [for (
   properties: {
     addressPrefix: sn.subnetPrefix
     delegations: sn.delegations
+    privateEndpointNetworkPolicies: sn.privateEndpointNetworkPolicies
   }
 }]

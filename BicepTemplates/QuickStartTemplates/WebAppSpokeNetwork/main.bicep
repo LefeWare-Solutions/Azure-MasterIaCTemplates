@@ -69,15 +69,18 @@ module Network '../../Modules/VNet/vnet.bicep' = {
   }
 }
 
-// module ASEV3 '../../Modules/ASEV3/asev3.bicep' = {
-//   name: 'ASEV3'
-//   params: {
-//     location: location
-//     aseName:aseName
-//     subnetName: 'ASESubnet'
-//     vnetName: vnetName
-//   }
-// }
+module ASEV3 '../../Modules/ASEV3/asev3.bicep' = {
+  name: 'ASEV3'
+  dependsOn: [
+    Network
+  ]
+  params: {
+    location: location
+    aseName:aseName
+    subnetName: 'ASESubnet'
+    vnetName: vnetName
+  }
+}
 
 module APIM '../../Modules/APIM/apim.bicep' = {
   name: 'APIM'

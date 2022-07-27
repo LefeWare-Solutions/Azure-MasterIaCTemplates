@@ -10,7 +10,8 @@
         {
           "name": "APIMSubnet",
           "subnetPrefix": "10.1.1.0/27",
-          "delegations": []
+          "delegations": [],
+          "privateEndpointNetworkPolicies": "Disabled"
         },
         {
           "name": "ASESubnet",
@@ -22,7 +23,14 @@
                 "serviceName": "Microsoft.Web/hostingEnvironments"
               }
             }
-          ]
+          ],
+          "privateEndpointNetworkPolicies": "Disabled"
+        },
+        {
+          "name": "PESubnet",
+          "subnetPrefix": "10.1.3.0/27",
+          "delegations": [],
+          "privateEndpointNetworkPolicies": "Enabled"
         }
       ]
     },

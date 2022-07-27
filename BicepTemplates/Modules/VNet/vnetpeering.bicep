@@ -11,8 +11,8 @@ resource localVirtualNetworkName_peering_to_remote_vnet 'Microsoft.Network/virtu
   name: '${localVirtualNetworkName}/peering-to-remote-vnet'
   properties: {
     allowVirtualNetworkAccess: true
-    allowForwardedTraffic: false
-    allowGatewayTransit: false
+    allowForwardedTraffic: true
+    allowGatewayTransit: true
     useRemoteGateways: false
     remoteVirtualNetwork: {
       id: resourceId(remoteVirtualNetworkResourceGroupName, 'Microsoft.Network/virtualNetworks', remoteVirtualNetworkName)
