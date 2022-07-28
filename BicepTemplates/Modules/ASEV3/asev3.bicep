@@ -23,6 +23,9 @@ param subnetName string
 @description('Required. Dedicated host count of ASEv3.')
 param dedicatedHostCount string = '0'
 
+@description('Optional. Tags of the resource.')
+param tags object = {}
+
 var subnetId = resourceId(vNetResourceGroupName, 'Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
 
 

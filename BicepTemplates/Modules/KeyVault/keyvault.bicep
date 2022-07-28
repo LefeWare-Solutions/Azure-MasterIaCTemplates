@@ -1,62 +1,62 @@
-resource symbolicname 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
-  name: 'string'
-  location: 'string'
-  tags: {
-    tagName1: 'tagValue1'
-    tagName2: 'tagValue2'
-  }
+@description('Required. The name of the keyvault.')
+param keyVaultName string
+
+@description('Required. Location for all resources.')
+param location string = resourceGroup().location
+
+@description('Optional. Tags of the resource.')
+param tags object = {}
+
+@description('Optional. KeyVault Access Policies.')
+param accessPolicies array = []
+
+@description('Optional. KeyVault IP Rules.')
+param ipRules array = []
+
+@description('Optional. KeyVault Network Rules.')
+param networkRules array = []
+
+@description('Optional. The default action when no rule from ipRules and from virtualNetworkRules match')
+param defaultNetworkAction string = 'Allow'
+
+@description('specify whether the vault will accept traffic from public internet')
+param publicNetworkAccess string = 'Enabled'
+
+// Secrets
+@description('Optional. KeyVault secrets.')
+param secrets array = []
+
+
+
+resource keyvault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
+  name: keyVaultName
+  location: location
+  tags: tags
   properties: {
-    accessPolicies: [
-      {
-        applicationId: 'string'
-        objectId: 'string'
-        permissions: {
-          certificates: [
-            'string'
-          ]
-          keys: [
-            'string'
-          ]
-          secrets: [
-            'string'
-          ]
-          storage: [
-            'string'
-          ]
-        }
-        tenantId: 'string'
-      }
-    ]
-    createMode: 'string'
-    enabledForDeployment: bool
-    enabledForDiskEncryption: bool
-    enabledForTemplateDeployment: bool
-    enablePurgeProtection: bool
-    enableRbacAuthorization: bool
-    enableSoftDelete: bool
+    accessPolicies: accessPolicies
     networkAcls: {
-      bypass: 'string'
-      defaultAction: 'string'
-      ipRules: [
-        {
-          value: 'string'
-        }
-      ]
-      virtualNetworkRules: [
-        {
-          id: 'string'
-          ignoreMissingVnetServiceEndpoint: bool
-        }
-      ]
+      bypass: 'AzureServices'
+      defaultAction: defaultNetworkAction
+      ipRules: ipRules
+      virtualNetworkRules: networkRules
     }
-    provisioningState: 'string'
-    publicNetworkAccess: 'string'
+    publicNetworkAccess: publicNetworkAccess
     sku: {
       family: 'A'
-      name: 'string'
+      name: 'standard'
     }
-    softDeleteRetentionInDays: int
-    tenantId: 'string'
-    vaultUri: 'string'
   }
 }
+
+@batchSize(1)
+resource keyvaultsecret 'Microsoft.KeyVault/vaults/secrets@2021-11-01-preview'  = [for (sn, index) in secrets: {
+  name: sn.name
+  parent: keyvault
+  properties: {
+    attributes: {
+      enabled: true
+    }
+    contentType: 'string'
+    value: sn.value
+  }
+}]

@@ -31,7 +31,7 @@
     "dnsRecords": {
       "value": [
         {
-          "name": "api.lefewaresolutions.com",
+          "name": "api",
           "ipAddress": "10.1.1.5"
         }
       ]

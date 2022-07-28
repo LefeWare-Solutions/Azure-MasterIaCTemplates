@@ -107,26 +107,26 @@ resource apiManagementInstance 'Microsoft.ApiManagement/service@2020-12-01' = {
     }
     hostnameConfigurations: [
       {
-        type: 'DeveloperPortal'
-        hostName: apiManagementPortalCustomHostname
-        encodedCertificate: apiManagementPortalCustomHostnameBase64EncodedCertificate
-        certificatePassword: apiManagementPortalCertificatePassword
-        negotiateClientCertificate: false
-      }
-      {
         type: 'Proxy'
         hostName: apiManagementProxyCustomHostname
         encodedCertificate: apiManagementProxyCustomHostnameBase64EncodedCertificate
         certificatePassword: apiManagementProxyCertificatePassword
         negotiateClientCertificate: false
       }
-      {
-        type: 'Management'
-        hostName: apiManagementManagementCustomHostname
-        encodedCertificate: apiManagementManagementCustomHostnameBase64EncodedCertificate
-        certificatePassword: apiManagementManagementCertificatePassword
-        negotiateClientCertificate: false
-      }
+      // {
+      //   type: 'DeveloperPortal'
+      //   hostName: apiManagementPortalCustomHostname
+      //   encodedCertificate: apiManagementPortalCustomHostnameBase64EncodedCertificate
+      //   certificatePassword: apiManagementPortalCertificatePassword
+      //   negotiateClientCertificate: false
+      // }
+      // {
+      //   type: 'Management'
+      //   hostName: apiManagementManagementCustomHostname
+      //   encodedCertificate: apiManagementManagementCustomHostnameBase64EncodedCertificate
+      //   certificatePassword: apiManagementManagementCertificatePassword
+      //   negotiateClientCertificate: false
+      // }
     ]
   }
 

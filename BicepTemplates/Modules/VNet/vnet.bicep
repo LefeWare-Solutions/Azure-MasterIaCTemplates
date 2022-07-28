@@ -23,16 +23,17 @@ resource VNet 'Microsoft.Network/virtualNetworks@2021-08-01' = {
         addressSpace
       ]
     }
+    subnets: subnets
   }
 }
 
-@batchSize(1)
-resource Subnets 'Microsoft.Network/virtualNetworks/subnets@2020-11-01' = [for (sn, index) in subnets: {
-  name: sn.name
-  parent: VNet
-  properties: {
-    addressPrefix: sn.subnetPrefix
-    delegations: sn.delegations
-    privateEndpointNetworkPolicies: sn.privateEndpointNetworkPolicies
-  }
-}]
+// @batchSize(1)
+// resource Subnets 'Microsoft.Network/virtualNetworks/subnets@2021-08-01' = [for (sn, index) in subnets: {
+//   name: sn.name
+//   parent: VNet
+//   properties: {
+//     addressPrefix: sn.subnetPrefix
+//     delegations: sn.delegations
+//     privateEndpointNetworkPolicies: sn.privateEndpointNetworkPolicies
+//   }
+// }]

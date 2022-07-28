@@ -2,14 +2,8 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "organizationName": {
-      "value": "lws"
-    },
-    "serviceName": {
-      "value": "common2"
-    },
-    "environmentPrefix":{
-      "value": "d"
+    "name": {
+      "value": "lws-d-vnet-test"
     },
     "addressSpace":{
       "value": "10.1.0.0/16"
@@ -18,20 +12,26 @@
       "value": [
         {
           "name": "APIMSubnet",
-          "subnetPrefix": "10.1.1.0/27",
-          "delegations": []
+          "properties":{
+            "addressPrefix": "10.1.1.0/27",
+            "privateEndpointNetworkPolicies": "Disabled",
+            "delegations": []
+          }
         },
         {
           "name": "ASESubnet",
-          "subnetPrefix": "10.1.2.0/27",
-          "delegations": [
-            {
-              "name": "Microsoft.Web.hostingEnvironments",
-              "properties": {
-                "serviceName": "Microsoft.Web/hostingEnvironments"
+          "properties":{
+            "addressPrefix": "10.1.2.0/27",
+            "privateEndpointNetworkPolicies": "Disabled",
+            "delegations": [
+              {
+                "name": "Microsoft.Web.hostingEnvironments",
+                "properties": {
+                  "serviceName": "Microsoft.Web/hostingEnvironments"
+                }
               }
-            }
-          ]
+            ]
+          }
         }
       ]
     }

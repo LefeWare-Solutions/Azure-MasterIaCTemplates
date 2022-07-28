@@ -10,11 +10,3 @@ az deployment group create `
   apiManagementPortalCertificatePassword=$(cat ./.certs/pass) `
   apiManagementProxyCertificatePassword=$(cat ./.certs/pass) `
   apiManagementManagementCertificatePassword=$(cat ./.certs/pass)
-
-
-
-
-  #Purge APIM
-  $subscriptionId = ""
-  $apimName = "lws-eastus-apim-d-app1"
-  az rest --method delete --header "Accept=application/json" -u 'https://management.azure.com/subscriptions/$(subscriptionId)/providers/Microsoft.ApiManagement/locations/eastus/deletedservices/$(apimName)?api-version=2020-06-01-preview'
