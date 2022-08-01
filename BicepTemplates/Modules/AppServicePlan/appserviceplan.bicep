@@ -1,6 +1,6 @@
 
 @description('Required: Name of the Web Farm')
-param serverFarmName string = 'serverfarm'
+param serverFarmName string
 
 @description('Location for all resources.')
 param location string = resourceGroup().location
@@ -14,19 +14,22 @@ param location string = resourceGroup().location
 param skuName string = 'I1v2'
 
 @description('Location for all resources.')
-param aseEnvironmentId string = resourceGroup().location
+param aseEnvironmentId string = 'null'
 
 resource serverFarm 'Microsoft.Web/serverfarms@2020-06-01' = {
   name: serverFarmName
   location: location
   sku: {
     tier: skuName
+    name: skuName
     capacity: 1
   }
-  kind: 'app'
+  kind: 'linux'
   properties: {
     hostingEnvironmentProfile: {
       id: aseEnvironmentId
     }
   }
 }
+
+output appserviceplanid string = serverFarm.id

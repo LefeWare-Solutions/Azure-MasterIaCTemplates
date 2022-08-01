@@ -14,7 +14,7 @@ param location string = resourceGroup().location
 ])
 param apiManagementSku string = 'Developer'
 
-// #region ---- Network Settings----
+// ---- Network Settings----
 @description('Required. The Virtual Network (vNet) Name.')
 param vnetName string
 
@@ -23,7 +23,6 @@ param subnetName string
 
 var vnetId = resourceId('Microsoft.Network/virtualNetworks', vnetName)
 var apimSubnetId = '${vnetId}/subnets/${subnetName}' 
-// #endregion
 
 // #region ---- Azure API Management parameters ----
 @description('A unique name for the API Management service. The service name refers to both the service and the corresponding Azure resource. The service name is used to generate a default domain name: <name>.azure-api.net.')
@@ -32,40 +31,8 @@ param apiManagementPublisherName string
 @description('The email address to which all the notifications from API Management will be sent.')
 param apiManagementPublisherEmailAddress string
 
-
-@description('A custom domain name for the API Management service developer portal (e.g., portal.consoto.com). ')
-param apiManagementPortalCustomHostname string
-
-@description('A custom domain name for the API Management service gateway/proxy endpoint (e.g., api.consoto.com).')
-param apiManagementProxyCustomHostname string
-
-@description('A custom domain name for the API Management service management portal (e.g., management.consoto.com).')
-param apiManagementManagementCustomHostname string
-
-@description('Password for corresponding to the certificate for the API Management custom developer portal domain name.')
-@secure()
-param apiManagementPortalCertificatePassword string
-
-@description('Used by Application Gateway, the Base64 encoded PFX certificate corresponding to the API Management custom developer portal domain name.')
-@secure()
-param apiManagementPortalCustomHostnameBase64EncodedCertificate string
-
-@description('Password for corresponding to the certificate for the API Management custom proxy domain name.')
-@secure()
-param apiManagementProxyCertificatePassword string
-
-@description('Used by Application Gateway, the Base64 encoded PFX certificate corresponding to the API Management custom proxy domain name.')
-@secure()
-param apiManagementProxyCustomHostnameBase64EncodedCertificate string
-
-@description('Password for corresponding to the certificate for the API Management custom management domain name.')
-@secure()
-param apiManagementManagementCertificatePassword string
-
-@description('Used by Application Gateway, the Base64 encoded PFX certificate corresponding to the API Management custom management domain name.')
-@secure()
-param apiManagementManagementCustomHostnameBase64EncodedCertificate string
-// #endregion
+@description('Optional. Custom APIM hostname confirations')
+param hostnameConfigurations array = []
 
 resource nsgApiManagemnt 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
   name: nsgName
@@ -105,29 +72,7 @@ resource apiManagementInstance 'Microsoft.ApiManagement/service@2020-12-01' = {
     virtualNetworkConfiguration: {
       subnetResourceId: apimSubnetId
     }
-    hostnameConfigurations: [
-      {
-        type: 'Proxy'
-        hostName: apiManagementProxyCustomHostname
-        encodedCertificate: apiManagementProxyCustomHostnameBase64EncodedCertificate
-        certificatePassword: apiManagementProxyCertificatePassword
-        negotiateClientCertificate: false
-      }
-      // {
-      //   type: 'DeveloperPortal'
-      //   hostName: apiManagementPortalCustomHostname
-      //   encodedCertificate: apiManagementPortalCustomHostnameBase64EncodedCertificate
-      //   certificatePassword: apiManagementPortalCertificatePassword
-      //   negotiateClientCertificate: false
-      // }
-      // {
-      //   type: 'Management'
-      //   hostName: apiManagementManagementCustomHostname
-      //   encodedCertificate: apiManagementManagementCustomHostnameBase64EncodedCertificate
-      //   certificatePassword: apiManagementManagementCertificatePassword
-      //   negotiateClientCertificate: false
-      // }
-    ]
+    hostnameConfigurations: hostnameConfigurations
   }
 
   // resource appInsightsLogger 'loggers' = {

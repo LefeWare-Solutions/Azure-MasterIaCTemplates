@@ -40,32 +40,11 @@
         }
       ]
     },
-    "apiManagementPortalCustomHostname": {
-      "value": "portal.lefewaresolutions.com"
-    },
     "apiManagementProxyCustomHostname": {
       "value": "api.lefewaresolutions.com"
     },
-    "apiManagementManagementCustomHostname": {
-      "value": "management.lefewaresolutions.com"
-    },
-    "apiManagementPortalCertificatePassword": {
-      "value": ""
-    },
-    "apiManagementPortalCustomHostnameBase64EncodedCertificate": {
-      "value": ""
-    },
-    "apiManagementProxyCertificatePassword": {
-      "value": ""
-    },
-    "apiManagementProxyCustomHostnameBase64EncodedCertificate": {
-      "value": ""
-    },
-    "apiManagementManagementCertificatePassword": {
-      "value": ""
-    },
-    "apiManagementManagementCustomHostnameBase64EncodedCertificate": {
-      "value": ""
+    "apimProxyCertificateKeyVaultId":{
+      "value": "https://lws-eastus-kv-d-common.vault.azure.net/secrets/api-lefewaresolutions-com2"
     }
   }
 }

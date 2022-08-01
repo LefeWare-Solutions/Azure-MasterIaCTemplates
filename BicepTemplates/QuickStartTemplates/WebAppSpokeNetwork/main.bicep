@@ -14,40 +14,15 @@ param subnets array
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
+// ---- App Parameters----
+param sqlAdminPassword string = 'P@ssw0rd!' //TODO: Create random password generator
 
 // ---- Azure API Management parameters ----
-@description('A custom domain name for the API Management service developer portal (e.g., portal.consoto.com). ')
-param apiManagementPortalCustomHostname string
-
 @description('A custom domain name for the API Management service gateway/proxy endpoint (e.g., api.consoto.com).')
 param apiManagementProxyCustomHostname string
 
-@description('A custom domain name for the API Management service management portal (e.g., management.consoto.com).')
-param apiManagementManagementCustomHostname string
-
-@description('Password for corresponding to the certificate for the API Management custom developer portal domain name.')
-@secure()
-param apiManagementPortalCertificatePassword string
-
-@description('Used by Application Gateway, the Base64 encoded PFX certificate corresponding to the API Management custom developer portal domain name.')
-@secure()
-param apiManagementPortalCustomHostnameBase64EncodedCertificate string
-
-@description('Password for corresponding to the certificate for the API Management custom proxy domain name.')
-@secure()
-param apiManagementProxyCertificatePassword string
-
-@description('Used by Application Gateway, the Base64 encoded PFX certificate corresponding to the API Management custom proxy domain name.')
-@secure()
-param apiManagementProxyCustomHostnameBase64EncodedCertificate string
-
-@description('Password for corresponding to the certificate for the API Management custom management domain name.')
-@secure()
-param apiManagementManagementCertificatePassword string
-
-@description('Used by Application Gateway, the Base64 encoded PFX certificate corresponding to the API Management custom management domain name.')
-@secure()
-param apiManagementManagementCustomHostnameBase64EncodedCertificate string
+@description('')
+param apimProxyCertificateKeyVaultId string
 
 // ---- Variables----
 var organizationName = 'lws'
@@ -56,6 +31,12 @@ var vnetName = '${organizationName}-${location}-vnet-${environmentPrefix}-${serv
 var nsgAPIMName = '${organizationName}-${location}-nsg-${environmentPrefix}-${serviceName}'
 var apimName = '${organizationName}-${location}-apim-${environmentPrefix}-${serviceName}'
 var aseName = '${organizationName}-${location}-ase-${environmentPrefix}-${serviceName}'
+
+// ---- App Variables----
+var aspName = '${organizationName}-${location}-asp-${environmentPrefix}-${serviceName}'
+var appServiceName = '${organizationName}-${location}-app-${environmentPrefix}-${serviceName}'
+var sqlServerName = '${organizationName}-${location}-sqlsrv-${environmentPrefix}-${serviceName}'
+var peSQLServerName = '${organizationName}-${location}-pesqlsrv-${environmentPrefix}-${serviceName}'
 
 // ---- Modules----
 module Network '../../Modules/VNet/vnet.bicep' = {
@@ -93,16 +74,73 @@ module APIM '../../Modules/APIM/apim.bicep' = {
     nsgName: nsgAPIMName
     subnetName: 'APIMSubnet'
     vnetName: vnetName
-    apiManagementManagementCertificatePassword: apiManagementManagementCertificatePassword
-    apiManagementManagementCustomHostname: apiManagementManagementCustomHostname
-    apiManagementManagementCustomHostnameBase64EncodedCertificate: apiManagementManagementCustomHostnameBase64EncodedCertificate
-    apiManagementPortalCertificatePassword: apiManagementPortalCertificatePassword
-    apiManagementPortalCustomHostname: apiManagementPortalCustomHostname
-    apiManagementPortalCustomHostnameBase64EncodedCertificate: apiManagementPortalCustomHostnameBase64EncodedCertificate
-    apiManagementProxyCertificatePassword: apiManagementProxyCertificatePassword
-    apiManagementProxyCustomHostname: apiManagementProxyCustomHostname
-    apiManagementProxyCustomHostnameBase64EncodedCertificate: apiManagementProxyCustomHostnameBase64EncodedCertificate
+    hostnameConfigurations: [
+      {
+        type: 'Proxy'
+        hostName: apiManagementProxyCustomHostname
+        keyVaultId: apimProxyCertificateKeyVaultId
+        negotiateClientCertificate: false
+        defaultSslBinding: true
+        certificateSource: 'KeyVault'
+      }
+    ]
     apiManagementPublisherEmailAddress: 'admin@lefewaresolutions.com'
     apiManagementPublisherName: 'LefeWareSolutions'
+  }
+}
+
+
+// App Specific
+module AppServicePlan '../../Modules/AppServicePlan/appserviceplan.bicep' = {
+  name: 'AppServicePlan'
+  dependsOn: [
+    ASEV3
+  ]
+  params: {
+    location: location
+    aseEnvironmentId:ASEV3.outputs.asev3id
+    serverFarmName: aspName
+  }
+}
+
+module AppService '../../Modules/AppService/appservice.bicep' = {
+  name: 'AppService'
+  dependsOn: [
+    ASEV3
+  ]
+  params: {
+    location: location
+    webAppName: appServiceName
+    appServicePlanId: AppServicePlan.outputs.appserviceplanid
+  }
+}
+
+module SQLServer '../../Modules/SQLServer/sqlserver.bicep' = {
+  name: 'SqlServer'
+  params: {
+    location: location
+    administratorLogin: 'lwsadmin'
+    administratorLoginPassword: sqlAdminPassword
+    sqlServerName: sqlServerName
+    sqlDBName : 'DB1'
+  }
+}
+
+module PESQLServer '../../Modules/PrivateEndpoint/privateendpoint.bicep' = {
+  name: 'PESqlServer'
+  params: {
+    privateEndpointName: peSQLServerName
+    location: location
+    vnetName: vnetName
+    subnetName: 'PESubnet'
+    privateLinkServiceConnection:       {
+      name: peSQLServerName
+      properties: {
+        privateLinkServiceId: SQLServer.outputs.sqlserverid
+        groupIds: [
+          'sqlServer'
+        ]
+      }
+    }
   }
 }

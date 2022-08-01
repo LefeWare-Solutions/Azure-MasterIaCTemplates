@@ -1,6 +1,6 @@
 @description('Web app name.')
 @minLength(2)
-param webAppName string = 'webApp-${uniqueString(resourceGroup().id)}'
+param webAppName string
 
 @description('Location for all resources.')
 param location string = resourceGroup().location
@@ -9,7 +9,7 @@ param location string = resourceGroup().location
 param appServicePlanId string
 
 @description('The Runtime stack of current web app')
-param linuxFxVersion string = 'DOTNETCORE|3.0'
+param linuxFxVersion string = 'DOTNETCORE|6.0'
 
 resource webApp 'Microsoft.Web/sites@2021-02-01' = {
   name: webAppName
@@ -18,9 +18,7 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
     httpsOnly: true
     serverFarmId: appServicePlanId
     siteConfig: {
-      linuxFxVersion: linuxFxVersion
       minTlsVersion: '1.2'
-      ftpsState: 'FtpsOnly'
     }
   }
   identity: {

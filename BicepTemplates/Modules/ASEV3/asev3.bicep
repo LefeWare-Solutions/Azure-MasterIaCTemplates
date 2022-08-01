@@ -45,3 +45,5 @@ resource asev3 'Microsoft.Web/hostingEnvironments@2020-12-01' = {
     } 
   }
 }
+
+output asev3id string = asev3.id

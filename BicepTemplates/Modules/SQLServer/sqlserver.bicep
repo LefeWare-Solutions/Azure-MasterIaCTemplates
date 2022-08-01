@@ -1,11 +1,5 @@
-@description('Required. The name of the organization.')
-param organizationName string
-
-@description('Required. The name of the ACR service to create.')
-param serviceName string
-
-@description('Required. The environment short form name.')
-param environmentPrefix string
+@description('Required. The name of the SQL Server to create.')
+param sqlServerName string
 
 @description('Optional. The location of the service to create.')
 param location string = resourceGroup().location
@@ -24,7 +18,7 @@ param administratorLogin string
 param administratorLoginPassword string
 
 resource sqlServer 'Microsoft.Sql/servers@2021-08-01-preview' = {
-  name: '${organizationName}-${location}-sqlsrv-${environmentPrefix}-${serviceName}'
+  name: sqlServerName
   location: location
   tags: tags
   properties: {
@@ -46,3 +40,5 @@ resource sqlDB 'Microsoft.Sql/servers/databases@2021-08-01-preview' = {
     capacity: 5
   }
 }
+
+output sqlserverid string = sqlServer.id
