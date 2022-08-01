@@ -60,6 +60,7 @@ resource keyvaultsecret 'Microsoft.KeyVault/vaults/secrets@2021-11-01-preview'  
     contentType: sn.type
     attributes: {
       enabled: true
+      nbf: sn.nbf
     }
     value: sn.value
   }

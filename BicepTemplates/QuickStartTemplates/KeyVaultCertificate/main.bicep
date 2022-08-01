@@ -63,6 +63,7 @@ module keyvault '../../Modules/KeyVault/keyvault.bicep' = {
       {
         name: 'api-lefewaresolutions-com'
         type: 'application/x-pkcs12'
+        nbf: 1659228716
         value: pfxCertValue
       }
     ]

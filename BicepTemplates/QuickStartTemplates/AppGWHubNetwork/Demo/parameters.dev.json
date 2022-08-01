@@ -12,9 +12,11 @@
       "value": [
         {
           "name": "AppGWSubnet",
-          "addressPrefix": "10.0.0.0/27",
-          "delegations": [],
-          "privateEndpointNetworkPolicies": "Disabled"
+          "properties":{
+            "addressPrefix": "10.0.0.0/27",
+            "delegations": [],
+            "privateEndpointNetworkPolicies": "Disabled"
+          }
         }
       ]
     },
@@ -23,7 +25,7 @@
         {
           "name": "api-lefewaresolutions-com",
           "properties": {
-            "keyVaultSecretId": "https://lws-eastus-kv-common.vault.azure.net/secrets/api-lefewaresolutions-com"
+            "keyVaultSecretId": "https://lws-eastus-kv-d-common.vault.azure.net/secrets/api-lefewaresolutions-com2"
           }
         }
       ]
@@ -65,7 +67,7 @@
           "name": "apimgatewayprobe",
           "properties": {
             "protocol": "Https",
-            "host": "apiManagementProxyCustomHostname",
+            "host": "api.lefewaresolutions.com",
             "path": "/status-0123456789abcdef",
             "interval": 30,
             "timeout": 120,
