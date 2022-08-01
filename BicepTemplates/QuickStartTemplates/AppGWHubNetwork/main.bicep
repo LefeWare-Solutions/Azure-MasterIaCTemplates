@@ -14,19 +14,6 @@ param subnets array
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-// ---- SSL Parameters----
-@description('Used by Application Gateway, the Base64 encoded CER/CRT certificate corresponding to the root certificate for Application Gateway.')
-@secure()
-param applicationGatewayTrustedRootBase64EncodedCertificate string
-
-@description('Used by Application Gateway, the Base64 encoded PFX certificate corresponding to the API Management custom proxy domain name.')
-@secure()
-param apiManagementGatewayCustomHostnameBase64EncodedCertificate string
-
-@description('Password for corresponding to the certificate for the API Management custom proxy domain name.')
-@secure()
-param apiManagementGatewayCertificatePassword string
-
 // ---- AppGW Parameters----
 @description('Required')
 param backendAddressPools array
@@ -36,6 +23,9 @@ param gatewayListenerHostName string
 
 @description('Required')
 param backendHttpSettingsCollection array
+
+@description('Required')
+param sslCertificates array
 
 @description('Required')
 param probes array
@@ -70,9 +60,7 @@ module AppGW '../../Modules/AppGateway/appgateway.bicep' = {
     nsgAppGatewayName: nsgAppGatewayName
     subnetName: 'AppGWSubnet'
     vnetName:vnetName
-    apiManagementGatewayCertificatePassword:apiManagementGatewayCertificatePassword
-    apiManagementGatewayCustomHostnameBase64EncodedCertificate:apiManagementGatewayCustomHostnameBase64EncodedCertificate
-    applicationGatewayTrustedRootBase64EncodedCertificate:applicationGatewayTrustedRootBase64EncodedCertificate
+    sslCertificates: sslCertificates
     backendAddressPools:backendAddressPools
     backendHttpSettingsCollection:backendHttpSettingsCollection
     gatewayListenerHostName: gatewayListenerHostName

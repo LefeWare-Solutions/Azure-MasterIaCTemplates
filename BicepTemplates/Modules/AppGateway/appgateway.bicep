@@ -10,23 +10,6 @@ param subnetName string
 
 var appGatewaySubnetId = resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
 
-// ---- SSL Settings----
-@description('Used by Application Gateway, the Base64 encoded CER/CRT certificate corresponding to the root certificate for Application Gateway.')
-@secure()
-param applicationGatewayTrustedRootBase64EncodedCertificate string
-
-@description('Flag to indicate if certificates used by Application Gateway were signed by a public Certificate Authority.')
-param useWellKnownCertificateAuthority bool = true
-
-@description('Used by Application Gateway, the Base64 encoded PFX certificate corresponding to the API Management custom proxy domain name.')
-@secure()
-param apiManagementGatewayCustomHostnameBase64EncodedCertificate string
-
-@description('Password for corresponding to the certificate for the API Management custom proxy domain name.')
-@secure()
-param apiManagementGatewayCertificatePassword string
-
-
 // ---- Application Gateway parameters ----
 @description('Optional')
 param appGatewaySKU string = 'Standard_v2'
@@ -57,15 +40,6 @@ param nsgAppGatewayName string
 @description('Required')
 param applicationGatewayName string
 
-
-var applicationGatewayTrustedRootCertificates = [
-  {
-    name: 'trustedrootcert'
-    properties: {
-      data: applicationGatewayTrustedRootBase64EncodedCertificate
-    }
-  }
-]
 
 
 // ---- Create Network Security Groups (NSGs) ----
@@ -142,16 +116,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2020-11-01' =
         }
       }
     ]
-    sslCertificates: [
-      {
-        name: 'gatewaycert'
-        properties: {
-          data:apiManagementGatewayCustomHostnameBase64EncodedCertificate
-          password: apiManagementGatewayCertificatePassword
-        }
-      }
-    ]
-    trustedRootCertificates: useWellKnownCertificateAuthority ? null : applicationGatewayTrustedRootCertificates
+    sslCertificates: sslCertificates
     frontendIPConfigurations: [
       {
         name: 'frontend1'
@@ -185,7 +150,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2020-11-01' =
           }
           protocol: 'Https'
           sslCertificate: {
-            id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', applicationGatewayName, 'gatewaycert')
+            id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', applicationGatewayName, '/sslCertificates/api-lefewaresolutions-com')
           }
           hostName: gatewayListenerHostName
           requireServerNameIndication: true

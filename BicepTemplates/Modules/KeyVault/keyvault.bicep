@@ -4,6 +4,9 @@ param keyVaultName string
 @description('Required. Location for all resources.')
 param location string = resourceGroup().location
 
+@description('The Tenant Id that should be used throughout the deployment.')
+param tenantId string = subscription().tenantId
+
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -45,6 +48,7 @@ resource keyvault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
       family: 'A'
       name: 'standard'
     }
+    tenantId: tenantId
   }
 }
 
@@ -53,10 +57,10 @@ resource keyvaultsecret 'Microsoft.KeyVault/vaults/secrets@2021-11-01-preview'  
   name: sn.name
   parent: keyvault
   properties: {
+    contentType: sn.type
     attributes: {
       enabled: true
     }
-    contentType: 'string'
     value: sn.value
   }
 }]
