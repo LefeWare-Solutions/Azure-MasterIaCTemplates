@@ -1,8 +1,3 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 name: $(major).$(minor).$(Rev:r)
 
 trigger:
@@ -11,7 +6,7 @@ trigger:
       - main
   paths:
     include:
-      - BicepTemplates/*
+      - BicepTemplates/Templates*
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -30,16 +25,28 @@ stages:
         steps:
           - template: ./build-steps.yml
 
-                
-  - stage: "release_prd"
-    displayName: Release Production
+  - stage: "publish_dev"
+    displayName: Publish Production
     dependsOn: ["build"]
+    condition: succeeded()
+    jobs:
+      - deployment: 'dev'
+        displayName: 'DEV'
+        environment: 'dev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - template: ./deployment-steps.yml
+                
+  - stage: "publish_prd"
+    displayName: Publish Production
+    dependsOn: ["publish_dev"]
     condition: succeeded()
     jobs:
       - deployment: 'prd'
         displayName: 'PRD'
-        pool:
-          vmImage: windows-latest
         environment: 'prd'
         strategy:
           runOnce:
@@ -47,4 +54,3 @@ stages:
               steps:
                 - checkout: self
                 - template: ./deployment-steps.yml
-                    

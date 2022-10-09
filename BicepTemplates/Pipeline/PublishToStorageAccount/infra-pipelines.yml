@@ -1,0 +1,57 @@
+name: $(major).$(minor).$(Rev:r)
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - BicepTemplates/Templates*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  location: 'centralus'
+
+stages:
+
+  - stage: build
+    displayName: Build
+    jobs:
+      - job: Build
+        pool:
+          vmImage: windows-latest
+        steps:
+          - template: ./build-steps.yml
+
+  - stage: "publish_dev"
+    displayName: Publish Production
+    dependsOn: ["build"]
+    condition: succeeded()
+    jobs:
+      - deployment: 'dev'
+        displayName: 'DEV'
+        environment: 'dev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - template: ./deployment-steps.yml
+                
+  - stage: "publish_prd"
+    displayName: Publish Production
+    dependsOn: ["publish_dev"]
+    condition: succeeded()
+    jobs:
+      - deployment: 'prd'
+        displayName: 'PRD'
+        environment: 'prd'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - template: ./deployment-steps.yml
+                    

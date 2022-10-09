@@ -1,6 +1,9 @@
 @description('Optional. The location of the service to create.')
 param location string = resourceGroup().location
 
+@description('Optional. Tags of the resource.')
+param tags object = {}
+
 // ---- Network Settings----
 @description('Required. The Virtual Network (vNet) Name.')
 param vnetName string
@@ -46,6 +49,7 @@ param applicationGatewayName string
 resource nsgAppGateway 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
   name: nsgAppGatewayName
   location: location
+  tags: tags
   properties: {
     securityRules: [
       {
@@ -84,6 +88,7 @@ resource nsgAppGateway 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
 // ---- Public IP Address ----
 resource applicationGatewayPublicIpAddress 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
   name: appGatewayPIPName
+  tags: tags
   location: location
   sku: {
     name: 'Standard'
