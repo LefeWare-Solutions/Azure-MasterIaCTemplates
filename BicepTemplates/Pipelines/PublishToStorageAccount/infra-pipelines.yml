@@ -41,7 +41,7 @@ stages:
               steps:
                 - template: ./deployment-steps.yml
                   parameters:
-                    azureSubscriptionServiceConnection: AzDevOps-Prd-ServiceConnection
+                    azureSubscriptionServiceConnection: lws-eus-d-azdevops-serviceconnection
                 
   - stage: "publish_prd"
     displayName: Publish Production
@@ -57,5 +57,5 @@ stages:
               steps:
                 - template: ./deployment-steps.yml
                   parameters:
-                    azureSubscriptionServiceConnection: AzDevOps-Prd-ServiceConnection
+                    azureSubscriptionServiceConnection: lws-eus-p-azdevops-secviceconnection
                     
