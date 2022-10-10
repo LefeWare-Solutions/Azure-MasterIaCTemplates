@@ -13,7 +13,9 @@ pool:
 
 variables:
   location: 'centralus'
-
+  major: 1
+  minor: 0
+  
 stages:
 
   - stage: build

@@ -41,4 +41,6 @@ stages:
             deploy:
               steps:
                 - template: ./deployment-steps.yml
+                  parameters:
+                    azureSubscriptionServiceConnection: AzDevOps-Prd-ServiceConnection
                     

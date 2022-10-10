@@ -8,14 +8,6 @@ steps:
     inputs:
       artifact: 'BicepTemplates'
       targetPath: $(Build.SourcesDirectory)/bin/BicepTemplates
-   
-  # - task: UsePythonVersion@0
-  #   inputs:
-  #     versionSpec: '3.x'
-  #     architecture: 'x64'
-
-  # - bash: pip install --pre azure-cli --extra-index-url https://azurecliprod.blob.core.windows.net/edge
-  #   displayName: 'Upgrade Azure CLI'
 
   - task: AzureCLI@2
     displayName: Create Master Infrastructure Container Registry

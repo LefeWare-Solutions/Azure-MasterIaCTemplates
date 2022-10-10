@@ -13,6 +13,8 @@ pool:
 
 variables:
   location: 'centralus'
+  major: 1
+  minor: 0
 
 stages:
 
@@ -37,8 +39,9 @@ stages:
           runOnce:
             deploy:
               steps:
-                - checkout: self
                 - template: ./deployment-steps.yml
+                  parameters:
+                    azureSubscriptionServiceConnection: AzDevOps-Dev-ServiceConnection
                 
   - stage: "publish_prd"
     displayName: Publish Production
@@ -52,6 +55,7 @@ stages:
           runOnce:
             deploy:
               steps:
-                - checkout: self
                 - template: ./deployment-steps.yml
+                  parameters:
+                    azureSubscriptionServiceConnection: AzDevOps-Prd-ServiceConnection
                     
