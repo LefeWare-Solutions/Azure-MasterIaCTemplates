@@ -9,7 +9,7 @@ steps:
   displayName: 'Publish to Central Feed'
   inputs:
     command: publish
-    vstsFeedPublish: 'lws-dev-infra-feed'
+    vstsFeedPublish: lws-dev-infra-feed
     vstsFeedPackagePublish: Templates
     versionOption: custom
     versionPublish: $(Build.BuildNumber)
