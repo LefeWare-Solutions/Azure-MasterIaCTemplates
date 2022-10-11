@@ -1,7 +1,7 @@
 steps:
 
   - task: PublishBuildArtifacts@1
-    displayName: Publish Resource Bicep Template
+    displayName: Publish Resource Bicep Templates
     inputs:
       PathtoPublish: '$(Build.SourcesDirectory)/BicepTemplates'
       ArtifactName: '$(Build.BuildNumber)/BicepTemplates'

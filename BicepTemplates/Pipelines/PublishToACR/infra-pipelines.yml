@@ -28,7 +28,7 @@ stages:
           - template: ./build-steps.yml
 
   - stage: "publish_dev"
-    displayName: Publish Production
+    displayName: Publish Dev
     dependsOn: ["build"]
     condition: succeeded()
     jobs:

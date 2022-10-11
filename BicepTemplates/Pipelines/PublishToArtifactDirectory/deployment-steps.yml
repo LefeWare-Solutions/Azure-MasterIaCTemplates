@@ -1,0 +1,15 @@
+steps:
+
+- task: DownloadPipelineArtifact@2
+  inputs:
+    artifact: 'BicepTemplates'
+    targetPath: $(Build.SourcesDirectory)/bin/BicepTemplates
+    
+- task: UniversalPackages@0
+  displayName: 'Publish to Feed'
+  inputs:
+    command: publish
+    vstsFeedPublish: 'lws-dev-infra-feed'
+    vstsFeedPackagePublish: test
+    versionOption: custom
+    versionPublish: 1.1.0

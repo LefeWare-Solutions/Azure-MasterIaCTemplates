@@ -18,17 +18,17 @@ variables:
   
 stages:
 
-  # - stage: build
-  #   displayName: Build
-  #   jobs:
-  #     - job: Build
-  #       pool:
-  #         vmImage: windows-latest
-  #       steps:
-  #         - template: ./build-steps.yml
+  - stage: build
+    displayName: Build
+    jobs:
+      - job: Build
+        pool:
+          vmImage: windows-latest
+        steps:
+          - template: ./build-steps.yml
 
   - stage: "publish_dev"
-    displayName: Publish Production
+    displayName: Publish Dev
     # dependsOn: ["build"]
     condition: succeeded()
     jobs:
@@ -40,7 +40,7 @@ stages:
             deploy:
               steps:
                 - checkout: self
-                - template: ./build-steps.yml
+                - template: ./deployment-steps.yml
                 
   - stage: "publish_prd"
     displayName: Publish Production
@@ -55,4 +55,4 @@ stages:
             deploy:
               steps:
                 - checkout: self
-                - template: ./build-steps.yml
+                - template: ./deployment-steps.yml
