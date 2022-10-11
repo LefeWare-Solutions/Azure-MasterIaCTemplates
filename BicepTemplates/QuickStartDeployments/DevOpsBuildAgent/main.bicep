@@ -33,15 +33,6 @@ var subnetName = 'AzureDevOpsSubnet'
 
 // ---- Tags----
 var tags = {
-  CostCenter: '6623'
-   Environment: environmentPrefixTag
-   ApplicationOwner: 'Rohan Mehta'
-   Application: 'AzureDevOps'
-   BusinessOwner:'Gil Brodsky' 
-   Budget: 'LendingEcosystem_${environmentPrefixTag}'
-   GLCode: '6911'
-   QueueName: 'ITServicesLevel1'
-   Department: ''
 }
 
 // ---- NSG ----
