@@ -11,9 +11,6 @@ steps:
     command: publish
     publishDirectory: '$(Build.ArtifactStagingDirectory)'
     vstsFeedPublish: 'LefewareSolutions/lws-dev-infra-feed'
-    vstsFeedPackagePublish: Templates
+    vstsFeedPackagePublish: dev-biceptemplates
     versionOption: custom
     versionPublish: $(Build.BuildNumber)
-
-
-            #  vstsFeedPublish: '408eb3c6-5977-45d5-943a-04c14a905ae5/9c0c3113-7f72-4174-8b9e-78ed7a358041'
