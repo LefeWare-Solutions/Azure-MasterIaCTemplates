@@ -12,10 +12,10 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  location: 'eastus'
+  location: 'centralus'
   major: 1
   minor: 0
-
+  
 stages:
 
   - stage: build
@@ -28,8 +28,8 @@ stages:
           - template: ./build-steps.yml
 
   - stage: "publish_dev"
-    displayName: Publish Development Infra
-    dependsOn: ["build"]
+    displayName: Publish Dev
+    # dependsOn: ["build"]
     condition: succeeded()
     jobs:
       - deployment: 'dev'
@@ -39,12 +39,11 @@ stages:
           runOnce:
             deploy:
               steps:
+                - checkout: self
                 - template: ./deployment-steps.yml
-                  parameters:
-                    azureSubscriptionServiceConnection: lws-d-azdevops-serviceconnection
                 
   - stage: "publish_prd"
-    displayName: Publish Production Infra
+    displayName: Publish Production
     dependsOn: ["publish_dev"]
     condition: succeeded()
     jobs:
@@ -55,7 +54,5 @@ stages:
           runOnce:
             deploy:
               steps:
+                - checkout: self
                 - template: ./deployment-steps.yml
-                  parameters:
-                    azureSubscriptionServiceConnection: lws-p-azdevops-secviceconnection
-                    

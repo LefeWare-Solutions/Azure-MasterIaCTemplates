@@ -1,0 +1,30 @@
+parameters:
+  - name: 'azureSubscriptionServiceConnection'
+    type: string
+    default: false
+
+steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      artifact: '$(Build.BuildNumber)'
+      path: $(Build.SourcesDirectory)/bin
+  
+   
+  - task: AzureCLI@2
+    displayName: Create Master Infrastructure Blob Storage
+    inputs:
+      azureSubscription: ${{ parameters.azureSubscriptionServiceConnection }}
+      scriptType: 'ps'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az group create --name $resourceGroupName --location $(location)
+        az storage account create --name sfmarc3stgpmasterinfra  --resource-group $resourceGroupName
+
+  - task: AzureFileCopy@4
+    displayName: Publish Master ARM Tempaltes to Blob Storage
+    inputs:
+      SourcePath: '$(Pipeline.Workspace)/$(Build.BuildNumber)'
+      azureSubscription: ${{ parameters.azureSubscriptionServiceConnection }}
+      Destination: 'AzureBlob'
+      storage: $(storageAccountName)
+      ContainerName: 'ArmTemplates'

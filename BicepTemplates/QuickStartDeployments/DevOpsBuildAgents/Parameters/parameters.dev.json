@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentPrefix":{
+      "value": "dev"
+    },
+    "vmssAdminPassword": {
+      "value": ""
+    },
+    "vnetAddressSpace":{
+      "value": "10.50.68.0/25"
+    },
+    "bastionSubnetAddressSpace":{
+      "value": "10.50.68.0/26"
+    },
+    "devOpsAgentSubnetAddressSpace":{
+      "value": "10.50.68.64/27"
+    },
+    "peSubnetAddressSpace":{
+      "value": "10.50.68.96/27"
+    }
+  }
+}

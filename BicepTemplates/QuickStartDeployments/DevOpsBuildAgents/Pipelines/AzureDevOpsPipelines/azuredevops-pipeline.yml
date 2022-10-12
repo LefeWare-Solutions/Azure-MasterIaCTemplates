@@ -1,0 +1,30 @@
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      -BicepTempaltes/QuickStartTemplate*
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  location: 'eastus'
+
+stages:
+  - stage: "release_dev"
+    displayName: Release Dev
+    variables:
+      - template: ../../Variables/dev-variables.yml
+    jobs:
+      - deployment: 'dev-0'
+        environment: 'dev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: ./deployment-steps.yml
+  
+  
+  

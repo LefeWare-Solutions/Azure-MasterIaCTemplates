@@ -1,0 +1,16 @@
+steps:
+
+- task: DownloadPipelineArtifact@2
+  inputs:
+    artifact: 'Templates'
+    targetPath: $(Build.SourcesDirectory)/bin/Templates
+    
+- task: UniversalPackages@0
+  displayName: 'Publish to Central Feed'
+  inputs:
+    command: publish
+    publishDirectory: '$(Build.ArtifactStagingDirectory)'
+    vstsFeedPublish: 'LefewareSolutions/lws-dev-infra-feed'
+    vstsFeedPackagePublish: dev-biceptemplates
+    versionOption: custom
+    versionPublish: $(Build.BuildNumber)
