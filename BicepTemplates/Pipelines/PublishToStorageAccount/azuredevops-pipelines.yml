@@ -28,12 +28,14 @@ stages:
           - template: ./build-steps.yml
 
   - stage: "publish_dev"
-    displayName: Publish Development Infra
+    displayName: Publish Development Master Templates
     dependsOn: ["build"]
     condition: succeeded()
+    variables:
+      - template: ../Variables/dev-variables.yml
     jobs:
       - deployment: 'dev'
-        displayName: 'DEV'
+        displayName: 'Publish'
         environment: 'dev'
         strategy:
           runOnce:
@@ -41,15 +43,17 @@ stages:
               steps:
                 - template: ./deployment-steps.yml
                   parameters:
-                    azureSubscriptionServiceConnection: lws-d-azdevops-serviceconnection
+                    azureSubscriptionServiceConnection: ${{ variables.azureSubscription }}
                 
   - stage: "publish_prd"
-    displayName: Publish Production Infra
+    displayName: Publish Production Master Templates
     dependsOn: ["publish_dev"]
     condition: succeeded()
+    variables:
+      - template: ../Variables/prd-variables.yml
     jobs:
       - deployment: 'prd'
-        displayName: 'PRD'
+        displayName: 'Publish'
         environment: 'prd'
         strategy:
           runOnce:
@@ -57,5 +61,5 @@ stages:
               steps:
                 - template: ./deployment-steps.yml
                   parameters:
-                    azureSubscriptionServiceConnection: lws-p-azdevops-secviceconnection
+                    azureSubscriptionServiceConnection: ${{ variables.azureSubscription }}
                     

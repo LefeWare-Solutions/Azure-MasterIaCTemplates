@@ -13,10 +13,10 @@ variables:
   location: 'eastus'
 
 stages:
-  - stage: "deploy_dev"
+  - stage: "release_dev"
     displayName: Release Dev
     variables:
-      - template: ../Variables/dev-variables.yml
+      - template: ../../Variables/dev-variables.yml
     jobs:
       - deployment: 'dev-0'
         environment: 'dev'

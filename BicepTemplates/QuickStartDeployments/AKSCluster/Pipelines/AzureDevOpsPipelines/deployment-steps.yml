@@ -1,0 +1,32 @@
+parameters:
+- name: 'azureSubscription'
+  type: string
+  default: false
+
+steps: 
+
+- task: UniversalPackages@0
+  inputs:
+    command: 'download'
+    downloadDirectory: '$(System.DefaultWorkingDirectory)'
+    feedsToUse: 'internal'
+    vstsFeed: '408eb3c6-5977-45d5-943a-04c14a905ae5/9c0c3113-7f72-4174-8b9e-78ed7a358041'
+    vstsFeedPackage: 'd37ddcbf-0b2e-4735-a6e6-e99140863d14'
+    vstsPackageVersion: '1.0.7'
+
+  - task: AzureCLI@2
+    displayName: 'Deploy Bicep Template'
+    inputs:
+      azureSubscription: ${{ variables.azureSubscription }}
+      scriptType: 'pscore'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        $resourceGroupName="lws-$(location)-$(environment)-devops-rg"
+
+        az deployment group create  `
+          --mode Incremental `
+          --resource-group $resourceGroupName `
+          --output jsonc `
+          --template-file $(Build.SourcesDirectory)\BicepTemplates\DevOpsCustomBuildAgent\main.bicep `
+          --parameters $(Build.SourcesDirectory)\BicepTemplates\DevOpsCustomBuildAgent\Parameters\parameters.$(environment).json `
+          vmssAdminPassword="$(vmssAdminPassword)"

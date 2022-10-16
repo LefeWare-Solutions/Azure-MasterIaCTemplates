@@ -9,7 +9,7 @@ steps:
       artifact: '$(Build.BuildNumber)'
       path: $(Build.SourcesDirectory)/bin
   
-   
+#Publish to an Azure Storage Account 
   - task: AzureCLI@2
     displayName: Create Master Infrastructure Blob Storage
     inputs:
@@ -17,14 +17,20 @@ steps:
       scriptType: 'ps'
       scriptLocation: 'inlineScript'
       inlineScript: |
+        $resourceGroupName = lws-eus-$(environmentShort)-mastertemplates-rg
+        $storageAccountName = lwseus$(environmentShort)mastertemplatesst
+
         az group create --name $resourceGroupName --location $(location)
-        az storage account create --name sfmarc3stgpmasterinfra  --resource-group $resourceGroupName
+        az storage account create --name $storageAccountName  --resource-group $resourceGroupName
 
   - task: AzureFileCopy@4
-    displayName: Publish Master ARM Tempaltes to Blob Storage
+    displayName: Publish Master Bicep Tempaltes to Blob Storage
     inputs:
       SourcePath: '$(Pipeline.Workspace)/$(Build.BuildNumber)'
       azureSubscription: ${{ parameters.azureSubscriptionServiceConnection }}
       Destination: 'AzureBlob'
       storage: $(storageAccountName)
       ContainerName: 'ArmTemplates'
+
+#Publish to an S3 Storage Account
+#TODO
