@@ -16,6 +16,9 @@ steps:
       scriptType: 'ps'
       scriptLocation: 'inlineScript'
       inlineScript: |
+        $resourceGroupName = lws-eus-$(environmentShort)-mastertemplates-rg
+        $acrName = lws-eus-$(environmentShort)-mastertemplates-acr
+        
         az group create --name $resourceGroupName --location $(location)
         az acr create --resource-group $resourceGroupName --name $acrName --sku Basic
 

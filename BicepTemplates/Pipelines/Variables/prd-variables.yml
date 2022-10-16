@@ -1,4 +1,4 @@
 variables:
-  azureSubscription: 'lws-d-azdevops-serviceconnection'
+  azureSubscription: 'lws-p-azdevops-serviceconnection'
   environment: 'prd'
   environmentShort: 'p'

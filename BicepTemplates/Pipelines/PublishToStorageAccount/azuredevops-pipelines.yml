@@ -9,7 +9,7 @@ trigger:
       - BicepTemplates/Templates*
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 variables:
   location: 'eastus'

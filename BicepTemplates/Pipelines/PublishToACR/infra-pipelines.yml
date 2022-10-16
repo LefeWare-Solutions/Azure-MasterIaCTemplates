@@ -9,7 +9,7 @@ trigger:
       - BicepTemplates/Templates*
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 variables:
   location: 'centralus'
@@ -31,9 +31,11 @@ stages:
     displayName: Publish Dev
     dependsOn: ["build"]
     condition: succeeded()
+    variables:
+      - template: ../Variables/dev-variables.yml
     jobs:
       - deployment: 'dev'
-        displayName: 'DEV'
+        displayName: 'Publish'
         environment: 'dev'
         strategy:
           runOnce:
@@ -41,15 +43,17 @@ stages:
               steps:
                 - template: ./deployment-steps.yml
                   parameters:
-                    azureSubscriptionServiceConnection: lws-eus-d-azdevops-serviceconnection
+                    azureSubscriptionServiceConnection: ${{ variables.azureSubscription }}
                 
   - stage: "publish_prd"
     displayName: Publish Production
     dependsOn: ["publish_dev"]
     condition: succeeded()
+    variables:
+      - template: ../Variables/dev-variables.yml
     jobs:
       - deployment: 'prd'
-        displayName: 'PRD'
+        displayName: 'Publish'
         environment: 'prd'
         strategy:
           runOnce:
@@ -57,5 +61,5 @@ stages:
               steps:
                 - template: ./deployment-steps.yml
                   parameters:
-                    azureSubscriptionServiceConnection: lws-eus-d-azdevops-serviceconnection
+                    azureSubscriptionServiceConnection: ${{ variables.azureSubscription }}
                     
