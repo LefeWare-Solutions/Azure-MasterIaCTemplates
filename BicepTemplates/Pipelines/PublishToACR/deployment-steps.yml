@@ -31,7 +31,10 @@ steps:
       scriptLocation: 'inlineScript'
       inlineScript: |
         az bicep install
+
+        $acrName="lwseus$(environmentShort)mastertemplatesacr"
         $files = Get-ChildItem '$(Build.SourcesDirectory)/bin/templates'
+        
         foreach ($file in $files)
         {
           $baseName = $file.BaseName
