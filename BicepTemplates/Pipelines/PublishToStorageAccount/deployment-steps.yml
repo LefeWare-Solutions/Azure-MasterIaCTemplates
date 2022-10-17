@@ -29,7 +29,7 @@ steps:
       SourcePath: '$(Pipeline.Workspace)/$(Build.BuildNumber)'
       azureSubscription: ${{ parameters.azureSubscriptionServiceConnection }}
       Destination: 'AzureBlob'
-      storage: $(storageAccountName)
+      storage: "lwseus$(environmentShort)mastertemplatesst"
       ContainerName: 'ArmTemplates'
 
 #Publish to an S3 Storage Account
