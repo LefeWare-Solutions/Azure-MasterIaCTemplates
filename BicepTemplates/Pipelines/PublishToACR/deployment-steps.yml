@@ -33,7 +33,7 @@ steps:
         az bicep install
 
         $acrName="lwseus$(environmentShort)mastertemplatesacr"
-        $files = Get-ChildItem '$(Build.SourcesDirectory)/bin/templates' -Recurse -Force
+        $files = Get-ChildItem '$(Build.SourcesDirectory)/bin/templates' -Recurse -Force -Include *.bicep
 
         foreach ($file in $files)
         {
@@ -42,7 +42,7 @@ steps:
           $version = '$(Build.BuildNumber)'
           $url = "br:" + $acrName + ".azurecr.io/bicep/modules/" + $baseName + ":" + $version
 
-          az bicep publish --file $file.Path --target $url
+          az bicep publish --file $file.FullName --target $url
         }
 
 
