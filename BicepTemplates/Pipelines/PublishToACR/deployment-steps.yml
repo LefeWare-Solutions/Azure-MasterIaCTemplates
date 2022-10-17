@@ -31,7 +31,7 @@ steps:
       scriptLocation: 'inlineScript'
       inlineScript: |
         az bicep install
-        $files = Get-ChildItem 'Templates'
+        $files = Get-ChildItem '$(Build.SourcesDirectory)/bin/templates'
         foreach ($file in $files)
         {
           $baseName = $file.BaseName

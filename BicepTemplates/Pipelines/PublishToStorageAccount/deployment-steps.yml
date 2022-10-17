@@ -31,7 +31,7 @@ steps:
       azureSubscription: ${{ parameters.azureSubscriptionServiceConnection }}
       Destination: 'AzureBlob'
       storage: "lwseus$(environmentShort)mastertemplatesst"
-      ContainerName: 'ArmTemplates'
+      ContainerName: 'BicepTemplates'
 
 #Publish to an S3 Storage Account
 #TODO
