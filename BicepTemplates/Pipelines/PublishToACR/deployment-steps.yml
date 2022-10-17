@@ -40,7 +40,7 @@ steps:
           $baseName = $file.BaseName
           $filePath = "BicepTemplates\Templates\" + $file.Name 
           $version = '$(Build.BuildNumber)'
-          $url = "br:" + $acrName ".azurecr.io/bicep/modules/" + $baseName + ":" + $version
+          $url = "br:" + $acrName + ".azurecr.io/bicep/modules/" + $baseName + ":" + $version
 
           az bicep publish --file $filePath --target $url
         }
