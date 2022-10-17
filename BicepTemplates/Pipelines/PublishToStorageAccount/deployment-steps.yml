@@ -17,8 +17,8 @@ steps:
       scriptType: 'ps'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        $resourceGroupName = lws-eus-$(environmentShort)-mastertemplates-rg
-        $storageAccountName = lwseus$(environmentShort)mastertemplatesst
+        $resourceGroupName="lws-eus-$(environmentShort)-mastertemplates-rg"
+        $storageAccountName="lwseus$(environmentShort)mastertemplatesst"
 
         az group create --name $resourceGroupName --location $(location)
         az storage account create --name $storageAccountName  --resource-group $resourceGroupName
