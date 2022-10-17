@@ -6,7 +6,7 @@ parameters:
 steps:
   - task: DownloadPipelineArtifact@2
     inputs:
-      artifact: 'BicepTemplates'
+      artifact: 'Templates'
       targetPath: $(Build.SourcesDirectory)/bin/Templates
 
   - task: AzureCLI@2

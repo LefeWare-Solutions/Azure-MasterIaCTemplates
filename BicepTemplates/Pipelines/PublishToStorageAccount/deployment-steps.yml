@@ -23,6 +23,7 @@ steps:
         az group create --name $resourceGroupName --location $(location)
         az storage account create --name $storageAccountName  --resource-group $resourceGroupName
 
+
   - task: AzureFileCopy@4
     displayName: Publish Master Bicep Tempaltes to Blob Storage
     inputs:
