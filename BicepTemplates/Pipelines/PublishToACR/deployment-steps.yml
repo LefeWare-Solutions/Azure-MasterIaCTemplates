@@ -7,7 +7,7 @@ steps:
   - task: DownloadPipelineArtifact@2
     inputs:
       artifact: 'BicepTemplates'
-      targetPath: $(Build.SourcesDirectory)/bin/BicepTemplates
+      targetPath: $(Build.SourcesDirectory)/bin/Templates
 
   - task: AzureCLI@2
     displayName: Create Master Infrastructure Container Registry
@@ -16,9 +16,9 @@ steps:
       scriptType: 'ps'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        $resourceGroupName = lws-eus-$(environmentShort)-mastertemplates-rg
-        $acrName = lws-eus-$(environmentShort)-mastertemplates-acr
-        
+        $resourceGroupName ="lws-eus-$(environmentShort)-mastertemplates-rg"
+        $acrName="lws-eus-$(environmentShort)-mastertemplates-acr"
+
         az group create --name $resourceGroupName --location $(location)
         az acr create --resource-group $resourceGroupName --name $acrName --sku Basic
 
@@ -31,7 +31,7 @@ steps:
       scriptLocation: 'inlineScript'
       inlineScript: |
         az bicep install
-        $files = Get-ChildItem 'BicepTemplates\Templates'
+        $files = Get-ChildItem 'Templates'
         foreach ($file in $files)
         {
           $baseName = $file.BaseName
