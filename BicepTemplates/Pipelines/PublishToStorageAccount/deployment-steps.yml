@@ -9,7 +9,7 @@ steps:
       artifact: '$(Build.BuildNumber)'
       path: $(Build.SourcesDirectory)/bin
   
-#Publish to an Azure Storage Account 
+#Publish to an Azure Storage Account (SP Requires Blob Contributor permission)
   - task: AzureCLI@2
     displayName: Create Master Infrastructure Blob Storage
     inputs:
