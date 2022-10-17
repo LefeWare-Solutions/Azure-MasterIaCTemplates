@@ -33,10 +33,11 @@ steps:
         az bicep install
 
         $acrName="lwseus$(environmentShort)mastertemplatesacr"
-        $files = Get-ChildItem '$(Build.SourcesDirectory)/bin/templates'
+        $files = Get-ChildItem '$(Build.SourcesDirectory)/bin/templates' -Recurse -Force
 
         foreach ($file in $files)
         {
+          Write-Host $file
           $baseName = $file.BaseName
           $filePath = "BicepTemplates\Templates\" + $file.Name 
           $version = '$(Build.BuildNumber)'
