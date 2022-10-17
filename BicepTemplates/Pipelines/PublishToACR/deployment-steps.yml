@@ -10,7 +10,7 @@ steps:
       targetPath: $(Build.SourcesDirectory)/bin/Templates
 
   - task: AzureCLI@2
-    displayName: Create Master Infrastructure Container Registry
+    displayName: Create Master Infrastructure Azure Container Registry
     inputs:
       azureSubscription: ${{ parameters.azureSubscriptionServiceConnection }}
       scriptType: 'ps'
@@ -39,11 +39,10 @@ steps:
         {
           Write-Host $file
           $baseName = $file.BaseName
-          $filePath = "BicepTemplates\Templates\" + $file.Name 
           $version = '$(Build.BuildNumber)'
           $url = "br:" + $acrName + ".azurecr.io/bicep/modules/" + $baseName + ":" + $version
 
-          az bicep publish --file $filePath --target $url
+          az bicep publish --file $file.Path --target $url
         }
 
 
