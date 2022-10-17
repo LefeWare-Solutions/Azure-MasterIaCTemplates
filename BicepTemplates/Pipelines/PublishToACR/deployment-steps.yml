@@ -34,13 +34,13 @@ steps:
 
         $acrName="lwseus$(environmentShort)mastertemplatesacr"
         $files = Get-ChildItem '$(Build.SourcesDirectory)/bin/templates'
-        
+
         foreach ($file in $files)
         {
           $baseName = $file.BaseName
           $filePath = "BicepTemplates\Templates\" + $file.Name 
           $version = '$(Build.BuildNumber)'
-          $url = "br:$(acrName).azurecr.io/bicep/modules/" + $baseName + ":" + $version
+          $url = "br:" + $acrName ".azurecr.io/bicep/modules/" + $baseName + ":" + $version
 
           az bicep publish --file $filePath --target $url
         }
