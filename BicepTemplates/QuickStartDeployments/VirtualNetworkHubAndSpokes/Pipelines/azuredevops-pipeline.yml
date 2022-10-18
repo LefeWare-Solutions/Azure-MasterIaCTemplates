@@ -1,0 +1,47 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - QuickStartDeployments/Networking/*
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  location: 'eastus'
+
+stages:
+          
+  - stage: "deploy_dev"
+    displayName: Deploy Development Infra
+    variables:
+      - template: ../../Variables/dev-variables.yml
+    jobs:
+      - deployment: 'dev'
+        environment: 'dev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: ./deployment-steps.yml
+                  parameters:
+                      azureSubscription: ${{ variables.azureSubscription }}
+  
+
+  - stage: "deploy_prd"
+    displayName: deploy Production Infra
+    dependsOn: ["deploy_dev"]
+    condition: succeeded()
+    variables:
+      - template: ../../Variables/prd-variables.yml
+    jobs:
+      - deployment: 'prd'
+        environment: 'prs'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: ./deployment-steps.yml   
+                  parameters:
+                      azureSubscription: ${{ variables.azureSubscription }}               
