@@ -1,0 +1,39 @@
+parameters:
+- name: 'azureSubscription'
+  type: string
+  default: false
+
+steps:
+  - checkout: self
+
+
+  - task: AzureCLI@2
+    displayName: Generate SAS Token for IaC storage container
+    #condition:  eq(variables['skipInfrastructureDeployment'], 'true')
+    inputs:
+      azureSubscription: ${{ parameters.masterTemplatesAzureSubscription }}
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: |
+        $exp = (Get-Date).AddDays(1).ToString("yyyy-M-d")
+        $sastoken = az storage account generate-sas --permissions r --account-name sfmarc3stgpmasterinfra --services b --resource-types co --expiry $exp
+        $sastoken = $sastoken.Substring(1, $sastoken.Length - 2)
+        Write-Host "##vso[task.setvariable variable=iacsas]$sastoken"
+        echo $sastoken
+
+
+  - task: AzureCLI@2
+    displayName: 'Deploy Bicep Template'
+    inputs:
+      azureSubscription: ${{parameters.azureSubscription}}
+      scriptType: 'pscore'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        $resourceGroupName="lws-eus-$(environment)-networking-rg"
+        
+        az deployment group create  `
+          --mode Incremental `
+          --resource-group $resourceGroupName `
+          --output yamlc `
+          --template-file $(Build.SourcesDirectory)\Deployments\Networking\main.bicep `
+          --parameters $(Build.SourcesDirectory)\Deployments\Networking\Parameters\parameters.$(environment).json

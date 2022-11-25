@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentPrefix": {
+      "value": "dev"
+    },
+    "addressSpace": {
+      "value": "10.0.0.0/23"
+    },
+    "hubSubnetAddressSpace":{
+      "value": "10.0.0.0/24"
+    },
+    "spoke1SubnetAddressSpace":{
+      "value": "10.0.1.32/27"
+    },
+    "spoke2SubnetAddressSpace":{
+      "value": "10.0.1.64/27"
+    }
+  }
+}
