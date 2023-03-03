@@ -29,7 +29,7 @@ resource sqlServer 'Microsoft.Sql/servers@2021-08-01-preview' = {
   }
 }
 
-resource sqlDB 'Microsoft.Sql/servers/databases@2021-08-01-preview' = {
+resource sqlDB 'Microsoft.Sql/servers/databases@2021-11-01-preview' = {
   parent: sqlServer
   name: sqlDBName
   location: location
