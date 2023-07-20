@@ -43,19 +43,19 @@ stages:
                   parameters:
                     azureSubscriptionServiceConnection: lws-eus-d-azdevops-serviceconnection
                 
-  - stage: "publish_prd"
-    displayName: Publish Production
-    dependsOn: ["publish_dev"]
-    condition: succeeded()
-    jobs:
-      - deployment: 'prd'
-        displayName: 'PRD'
-        environment: 'prd'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - template: ./deployment-steps.yml
-                  parameters:
-                    azureSubscriptionServiceConnection: lws-eus-p-azdevops-secviceconnection
+  # - stage: "publish_prd"
+  #   displayName: Publish Production
+  #   dependsOn: ["publish_dev"]
+  #   condition: succeeded()
+  #   jobs:
+  #     - deployment: 'prd'
+  #       displayName: 'PRD'
+  #       environment: 'prd'
+  #       strategy:
+  #         runOnce:
+  #           deploy:
+  #             steps:
+  #               - template: ./deployment-steps.yml
+  #                 parameters:
+  #                   azureSubscriptionServiceConnection: lws-eus-p-azdevops-secviceconnection
                     
