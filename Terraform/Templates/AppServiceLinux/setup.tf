@@ -10,9 +10,9 @@ terraform {
         }
      }
 
-#   backend "azurerm"{
-#     // properties initialize during runtime
-#     }
+    backend "azurerm"{
+     // properties initialize during runtime
+    }
     required_version = ">= 0.14.9"
 }
 
