@@ -1,2 +1,2 @@
-resource_group_name = "rg-appservice"
+resource_group_name = "appservice"
 app_name = "name"
