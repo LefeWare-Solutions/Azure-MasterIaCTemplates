@@ -11,6 +11,7 @@ terraform {
      }
 
     backend "azurerm"{
+        // intialized during runtime
     }
 }
 
