@@ -1,3 +1,0 @@
-**/Demo/*
-*/.terraform/**
-.terraform.lock.hcl
