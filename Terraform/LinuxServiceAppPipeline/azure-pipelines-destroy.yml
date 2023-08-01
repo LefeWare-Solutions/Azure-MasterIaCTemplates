@@ -82,16 +82,16 @@ stages:
     condition: succeeded('Development')
     dependsOn: Development         
     jobs:
-    #   - deployment: uat_destroy
-    #     displayName: Set Environment 
-    #     pool:
-    #       vmImage: 'ubuntu-latest' 
-    #     environment: 'stg'
-    #     strategy:
-    #       runOnce:
-    #         deploy:
-    #           steps:
-    #           - script: echo uat environment is successfully set
+      - deployment: uat_destroy
+        displayName: Set Environment 
+        pool:
+          vmImage: 'ubuntu-latest' 
+        environment: 'stg'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - script: echo uat environment is successfully set
       - job: apply
         displayName: Terraform UAT Destroy
         continueOnError: false
@@ -151,16 +151,16 @@ stages:
     condition: succeeded('UAT')
     dependsOn: UAT     
     jobs:
-    #   - deployment: dev_destroy
-    #     displayName: Set Environment
-    #     pool:
-    #       vmImage: 'ubuntu-latest' 
-    #     environment: 'prd'
-    #     strategy:
-    #       runOnce:
-    #         deploy:
-    #           steps:
-    #           - script: echo production environment is successfully set
+      - deployment: dev_destroy
+        displayName: Set Environment
+        pool:
+          vmImage: 'ubuntu-latest' 
+        environment: 'prd'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - script: echo production environment is successfully set
       - job: WaitForValidation
         pool: server
         displayName: Wait for approval
