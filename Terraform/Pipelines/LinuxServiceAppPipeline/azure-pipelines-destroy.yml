@@ -45,6 +45,14 @@ stages:
               backendAzureRmKey: '$(strgkey)'
               allowTelemetryCollection: false
           - task: TerraformCLI@0
+            displayName: Set Dev Workspace
+            inputs:
+              command: 'workspace'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workspaceSubCommand: 'delete'
+              allowTelemetryCollection: false
+              workspaceName: 'dev'
+          - task: TerraformCLI@0
             displayName: New Dev Workspace
             inputs:
               command: 'workspace'
