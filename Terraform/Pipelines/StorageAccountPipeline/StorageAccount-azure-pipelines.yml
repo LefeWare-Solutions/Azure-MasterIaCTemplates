@@ -1,0 +1,264 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables: 
+  subscription_id: 'ead6231b-67c2-496c-a2e5-d2ee7fb3491a'
+  strgrg: 'lws-sa-terraform-rg'
+  strg: 'lwssaterraform99525'
+  container: 'terraform-state'
+  strgkey: 'linuxappservice.terraform.tfstate'
+
+stages:
+  - stage: Validate
+    jobs:
+      - job: validate
+        continueOnError: false
+        steps:
+          - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+            displayName: Install Terraform
+            inputs:
+              terraformVersion: 'latest'
+          - task: TerraformCLI@0
+            displayName: Terraform Init
+            inputs:
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              backendType: 'azurerm'
+              backendServiceArm: 'DevOps-IAC-AzureDevOps-dev'
+              backendAzureRmSubscriptionId: '$(subscription_id)'
+              backendAzureRmResourceGroupName: '$(strgrg)'
+              backendAzureRmStorageAccountName: '$(strg)'
+              backendAzureRmContainerName: '$(container)'
+              backendAzureRmKey: '$(strgkey)'
+              allowTelemetryCollection: false
+          - task: TerraformCLI@0
+            displayName: Terraform Validate
+            inputs:
+              command: 'validate'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              allowTelemetryCollection: false
+             
+  - stage: Development 
+    condition: succeeded('Validate')
+    dependsOn: Validate        
+    jobs:
+      - deployment: dev_deploy
+        displayName: Set Environment
+        pool:
+          vmImage: 'ubuntu-latest' 
+        environment: 'dev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - script: echo development environment is successfully set
+      - job: apply
+        displayName: Terraform Dev Deploy
+        continueOnError: false
+        steps:
+          - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+            displayName: Install Terraform
+            inputs:
+              terraformVersion: 'latest'
+          - task: TerraformCLI@0
+            displayName: Terraform Init
+            inputs:
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              backendType: 'azurerm'
+              backendServiceArm: 'DevOps-IAC-AzureDevOps-dev'
+              backendAzureRmSubscriptionId: '$(subscription_id)'
+              backendAzureRmResourceGroupName: '$(strgrg)'
+              backendAzureRmStorageAccountName: '$(strg)'
+              backendAzureRmContainerName: '$(container)'
+              backendAzureRmKey: '$(strgkey)'
+              allowTelemetryCollection: false
+          - task: TerraformCLI@0
+            displayName: New Dev Workspace
+            inputs:
+              command: 'workspace'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              workspaceSubCommand: 'new'
+              skipExistingWorkspace: true
+              allowTelemetryCollection: false
+              workspaceName: 'dev'
+          - task: TerraformCLI@0
+            displayName: Select Dev Workspace
+            inputs:
+              command: 'workspace'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              workspaceSubCommand: 'select'
+              allowTelemetryCollection: false
+              workspaceName: 'dev'
+          - task: TerraformCLI@0
+            displayName: Terraform Plan
+            inputs:
+              command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              environmentServiceName: 'DevOps-IAC-AzureDevOps-dev'
+              providerAzureRmSubscriptionId: '$(subscription_id)'
+              allowTelemetryCollection: false
+          - task: TerraformCLI@0
+            displayName: Terraform Apply
+            inputs:
+              command: 'apply'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              environmentServiceName: 'DevOps-IAC-AzureDevOps-dev'
+              providerAzureRmSubscriptionId: '$(subscription_id)'
+              allowTelemetryCollection: false
+
+  - stage: UAT 
+    condition: succeeded('Development')
+    dependsOn: Development         
+    jobs:
+      - deployment: uat_deploy
+        displayName: Set Environment 
+        pool:
+          vmImage: 'ubuntu-latest' 
+        environment: 'stg'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - script: echo uat environment is successfully set
+      - job: apply
+        displayName: Terraform UAT Deploy
+        continueOnError: false
+        steps:
+          - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+            displayName: Install Terraform
+            inputs:
+              terraformVersion: 'latest'
+          - task: TerraformCLI@0
+            displayName: Terraform Init
+            inputs:
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              backendType: 'azurerm'
+              backendServiceArm: 'DevOps-IAC-AzureDevOps-dev'
+              backendAzureRmSubscriptionId: '$(subscription_id)'
+              backendAzureRmResourceGroupName: '$(strgrg)'
+              backendAzureRmStorageAccountName: '$(strg)'
+              backendAzureRmContainerName: '$(container)'
+              backendAzureRmKey: '$(strgkey)'
+              allowTelemetryCollection: false
+          - task: TerraformCLI@0
+            displayName: New UAT Workspace
+            inputs:
+              command: 'workspace'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              workspaceSubCommand: 'new'
+              skipExistingWorkspace: true
+              allowTelemetryCollection: false
+              workspaceName: 'uat'
+          - task: TerraformCLI@0
+            displayName: Select UAT Workspace
+            inputs:
+              command: 'workspace'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              workspaceSubCommand: 'select'
+              allowTelemetryCollection: false
+              workspaceName: 'uat'
+          - task: TerraformCLI@0
+            displayName: Terraform Plan
+            inputs:
+              command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              environmentServiceName: 'DevOps-IAC-AzureDevOps-dev'
+              providerAzureRmSubscriptionId: '$(subscription_id)'
+              allowTelemetryCollection: false
+          - task: TerraformCLI@0
+            displayName: Terraform Apply
+            inputs:
+              command: 'apply'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              environmentServiceName: 'DevOps-IAC-AzureDevOps-dev'
+              providerAzureRmSubscriptionId: '$(subscription_id)'
+              allowTelemetryCollection: false
+
+  - stage: Production   
+    condition: succeeded('UAT')
+    dependsOn: UAT     
+    jobs:
+      - deployment: dev_deploy
+        displayName: Set Environment
+        pool:
+          vmImage: 'ubuntu-latest' 
+        environment: 'prd'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - script: echo production environment is successfully set
+      - job: WaitForValidation
+        pool: server
+        displayName: Wait for approval
+        timeoutInMinutes: 4320 # job times out in 3 days
+        steps:
+          - task: ManualValidation@0
+            # only users with queue build permission can act on a manual validation.
+            displayName: Wait for approval
+            timeoutInMinutes: 1440 # task times out in 1 day
+            inputs:
+              notifyUsers: |
+                luis.santiago@lefewaresolutions.com
+                other@email.com
+              instructions: 'Approve the deployment to production'
+              onTimeout: 'reject'  
+      - job: apply
+        displayName: Terraform Prod Deploy
+        dependsOn: WaitForValidation
+        continueOnError: false
+        steps:
+          - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+            displayName: Install Terraform
+            inputs:
+              terraformVersion: 'latest'
+          - task: TerraformCLI@0
+            displayName: Terraform Init
+            inputs:
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              backendType: 'azurerm'
+              backendServiceArm: 'DevOps-IAC-AzureDevOps-dev'
+              backendAzureRmSubscriptionId: '$(subscription_id)'
+              backendAzureRmResourceGroupName: '$(strgrg)'
+              backendAzureRmStorageAccountName: '$(strg)'
+              backendAzureRmContainerName: '$(container)'
+              backendAzureRmKey: '$(strgkey)'
+              allowTelemetryCollection: false
+          - task: TerraformCLI@0
+            displayName: New Production Workspace
+            inputs:
+              command: 'workspace'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              workspaceSubCommand: 'new'
+              skipExistingWorkspace: true
+              allowTelemetryCollection: false
+              workspaceName: 'prod'
+          - task: TerraformCLI@0
+            displayName: Select Production Workspace
+            inputs:
+              command: 'workspace'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              workspaceSubCommand: 'select'
+              allowTelemetryCollection: false
+              workspaceName: 'prod'
+          - task: TerraformCLI@0
+            displayName: Terraform Plan
+            inputs:
+              command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              environmentServiceName: 'DevOps-IAC-AzureDevOps-dev'
+              providerAzureRmSubscriptionId: '$(subscription_id)'
+              allowTelemetryCollection: false
+          - task: TerraformCLI@0
+            displayName: Terraform Apply
+            inputs:
+              command: 'apply'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/StorageAccount'
+              environmentServiceName: 'DevOps-IAC-AzureDevOps-dev'
+              providerAzureRmSubscriptionId: '$(subscription_id)'
+              allowTelemetryCollection: false
