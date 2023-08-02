@@ -13,16 +13,16 @@ variables:
 stages:    
   - stage: Development
     jobs:
-      - deployment: dev_destroy
-        displayName: Set Environment
-        pool:
-          vmImage: 'ubuntu-latest' 
-        environment: 'dev'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-              - script: echo development environment is successfully set
+      # - deployment: dev_destroy
+      #   displayName: Set Environment
+      #   pool:
+      #     vmImage: 'ubuntu-latest' 
+      #   environment: 'dev'
+      #   strategy:
+      #     runOnce:
+      #       deploy:
+      #         steps:
+      #         - script: echo development environment is successfully set
       - job: destroy
         displayName: Terraform Dev Destroy
         continueOnError: false
@@ -82,16 +82,16 @@ stages:
     condition: succeeded('Development')
     dependsOn: Development         
     jobs:
-      - deployment: uat_destroy
-        displayName: Set Environment 
-        pool:
-          vmImage: 'ubuntu-latest' 
-        environment: 'stg'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-              - script: echo uat environment is successfully set
+      # - deployment: uat_destroy
+      #   displayName: Set Environment 
+      #   pool:
+      #     vmImage: 'ubuntu-latest' 
+      #   environment: 'stg'
+      #   strategy:
+      #     runOnce:
+      #       deploy:
+      #         steps:
+      #         - script: echo uat environment is successfully set
       - job: apply
         displayName: Terraform UAT Destroy
         continueOnError: false
