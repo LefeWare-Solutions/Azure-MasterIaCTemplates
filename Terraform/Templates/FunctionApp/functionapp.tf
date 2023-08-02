@@ -17,7 +17,7 @@ resource "azurerm_storage_account" "functionapp" {
 }
 
 resource "azurerm_service_plan" "functionapp" {
-  name                = "${var.prefix}-${terraform.workspace}-asp-${var.app_name}"
+  name                = "${var.prefix}-${terraform.workspace}-asp-${var.function_app}"
   resource_group_name = azurerm_resource_group.functionapp.name
   location            = azurerm_resource_group.functionapp.location
   os_type             = "Linux"
@@ -25,7 +25,7 @@ resource "azurerm_service_plan" "functionapp" {
 }
 
 resource "azurerm_linux_function_app" "functionapp" {
-  name                = "${var.prefix}-${terraform.workspace}-functionapp-${var.app_name}"
+  name                = "${var.prefix}-${terraform.workspace}-functionapp-${var.function_app}"
   resource_group_name = azurerm_resource_group.functionapp.name
   location            = azurerm_resource_group.functionapp.location
 
