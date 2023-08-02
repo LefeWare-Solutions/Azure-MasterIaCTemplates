@@ -35,7 +35,7 @@ stages:
             displayName: Terraform Init
             inputs:
               command: "init"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               backendType: "azurerm"
               backendServiceArm: "DevOps-IAC-AzureDevOps-dev"
               backendAzureRmSubscriptionId: "$(subscription_id)"
@@ -48,7 +48,7 @@ stages:
             displayName: New Dev Workspace
             inputs:
               command: "workspace"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               workspaceSubCommand: "new"
               skipExistingWorkspace: true
               allowTelemetryCollection: false
@@ -57,7 +57,7 @@ stages:
             displayName: Select Dev Workspace
             inputs:
               command: "workspace"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               workspaceSubCommand: "select"
               allowTelemetryCollection: false
               workspaceName: "dev"
@@ -65,7 +65,7 @@ stages:
             displayName: Terraform Plan
             inputs:
               command: "plan"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               environmentServiceName: "DevOps-IAC-AzureDevOps-dev"
               providerAzureRmSubscriptionId: "$(subscription_id)"
               allowTelemetryCollection: false
@@ -73,7 +73,7 @@ stages:
             displayName: Terraform Destroy
             inputs:
               command: "destroy"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               environmentServiceName: "DevOps-IAC-AzureDevOps-dev"
               providerAzureRmSubscriptionId: "$(subscription_id)"
               allowTelemetryCollection: false
@@ -104,7 +104,7 @@ stages:
             displayName: Terraform Init
             inputs:
               command: "init"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               backendType: "azurerm"
               backendServiceArm: "DevOps-IAC-AzureDevOps-dev"
               backendAzureRmSubscriptionId: "$(subscription_id)"
@@ -117,7 +117,7 @@ stages:
             displayName: New UAT Workspace
             inputs:
               command: "workspace"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               workspaceSubCommand: "new"
               skipExistingWorkspace: true
               allowTelemetryCollection: false
@@ -126,7 +126,7 @@ stages:
             displayName: Select UAT Workspace
             inputs:
               command: "workspace"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               workspaceSubCommand: "select"
               allowTelemetryCollection: false
               workspaceName: "uat"
@@ -134,7 +134,7 @@ stages:
             displayName: Terraform Plan
             inputs:
               command: "plan"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               environmentServiceName: "DevOps-IAC-AzureDevOps-dev"
               providerAzureRmSubscriptionId: "$(subscription_id)"
               allowTelemetryCollection: false
@@ -142,7 +142,7 @@ stages:
             displayName: Terraform Destroy
             inputs:
               command: "destroy"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               environmentServiceName: "DevOps-IAC-AzureDevOps-dev"
               providerAzureRmSubscriptionId: "$(subscription_id)"
               allowTelemetryCollection: false
@@ -189,7 +189,7 @@ stages:
             displayName: Terraform Init
             inputs:
               command: "init"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               backendType: "azurerm"
               backendServiceArm: "DevOps-IAC-AzureDevOps-dev"
               backendAzureRmSubscriptionId: "$(subscription_id)"
@@ -202,7 +202,7 @@ stages:
             displayName: New Production Workspace
             inputs:
               command: "workspace"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               workspaceSubCommand: "new"
               skipExistingWorkspace: true
               allowTelemetryCollection: false
@@ -211,7 +211,7 @@ stages:
             displayName: Select Production Workspace
             inputs:
               command: "workspace"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               workspaceSubCommand: "select"
               allowTelemetryCollection: false
               workspaceName: "prod"
@@ -219,7 +219,7 @@ stages:
             displayName: Terraform Plan
             inputs:
               command: "plan"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               environmentServiceName: "DevOps-IAC-AzureDevOps-dev"
               providerAzureRmSubscriptionId: "$(subscription_id)"
               allowTelemetryCollection: false
@@ -227,7 +227,7 @@ stages:
             displayName: Terraform Destroy
             inputs:
               command: "destroy"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/Terraform/Templates/LinuxServiceApp"
               environmentServiceName: "DevOps-IAC-AzureDevOps-dev"
               providerAzureRmSubscriptionId: "$(subscription_id)"
               allowTelemetryCollection: false
