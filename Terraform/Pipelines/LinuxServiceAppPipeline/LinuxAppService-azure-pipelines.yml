@@ -24,7 +24,7 @@ stages:
             displayName: Terraform Init
             inputs:
               command: 'init'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               backendType: 'azurerm'
               backendServiceArm: 'DevOps-IAC-AzureDevOps-dev'
               backendAzureRmSubscriptionId: '$(subscription_id)'
@@ -37,7 +37,7 @@ stages:
             displayName: Terraform Validate
             inputs:
               command: 'validate'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               allowTelemetryCollection: false
              
   - stage: Development 
@@ -66,7 +66,7 @@ stages:
             displayName: Terraform Init
             inputs:
               command: 'init'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               backendType: 'azurerm'
               backendServiceArm: 'DevOps-IAC-AzureDevOps-dev'
               backendAzureRmSubscriptionId: '$(subscription_id)'
@@ -79,7 +79,7 @@ stages:
             displayName: New Dev Workspace
             inputs:
               command: 'workspace'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               workspaceSubCommand: 'new'
               skipExistingWorkspace: true
               allowTelemetryCollection: false
@@ -88,7 +88,7 @@ stages:
             displayName: Select Dev Workspace
             inputs:
               command: 'workspace'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               workspaceSubCommand: 'select'
               allowTelemetryCollection: false
               workspaceName: 'dev'
@@ -96,7 +96,7 @@ stages:
             displayName: Terraform Plan
             inputs:
               command: 'plan'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               environmentServiceName: 'DevOps-IAC-AzureDevOps-dev'
               providerAzureRmSubscriptionId: '$(subscription_id)'
               allowTelemetryCollection: false
@@ -104,7 +104,7 @@ stages:
             displayName: Terraform Apply
             inputs:
               command: 'apply'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               environmentServiceName: 'DevOps-IAC-AzureDevOps-dev'
               providerAzureRmSubscriptionId: '$(subscription_id)'
               allowTelemetryCollection: false
@@ -135,7 +135,7 @@ stages:
             displayName: Terraform Init
             inputs:
               command: 'init'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               backendType: 'azurerm'
               backendServiceArm: 'DevOps-IAC-AzureDevOps-dev'
               backendAzureRmSubscriptionId: '$(subscription_id)'
@@ -148,7 +148,7 @@ stages:
             displayName: New UAT Workspace
             inputs:
               command: 'workspace'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               workspaceSubCommand: 'new'
               skipExistingWorkspace: true
               allowTelemetryCollection: false
@@ -157,7 +157,7 @@ stages:
             displayName: Select UAT Workspace
             inputs:
               command: 'workspace'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               workspaceSubCommand: 'select'
               allowTelemetryCollection: false
               workspaceName: 'uat'
@@ -165,7 +165,7 @@ stages:
             displayName: Terraform Plan
             inputs:
               command: 'plan'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               environmentServiceName: 'DevOps-IAC-AzureDevOps-dev'
               providerAzureRmSubscriptionId: '$(subscription_id)'
               allowTelemetryCollection: false
@@ -173,7 +173,7 @@ stages:
             displayName: Terraform Apply
             inputs:
               command: 'apply'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               environmentServiceName: 'DevOps-IAC-AzureDevOps-dev'
               providerAzureRmSubscriptionId: '$(subscription_id)'
               allowTelemetryCollection: false
@@ -220,7 +220,7 @@ stages:
             displayName: Terraform Init
             inputs:
               command: 'init'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               backendType: 'azurerm'
               backendServiceArm: 'DevOps-IAC-AzureDevOps-dev'
               backendAzureRmSubscriptionId: '$(subscription_id)'
@@ -233,7 +233,7 @@ stages:
             displayName: New Production Workspace
             inputs:
               command: 'workspace'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               workspaceSubCommand: 'new'
               skipExistingWorkspace: true
               allowTelemetryCollection: false
@@ -242,7 +242,7 @@ stages:
             displayName: Select Production Workspace
             inputs:
               command: 'workspace'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               workspaceSubCommand: 'select'
               allowTelemetryCollection: false
               workspaceName: 'prod'
@@ -250,7 +250,7 @@ stages:
             displayName: Terraform Plan
             inputs:
               command: 'plan'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               environmentServiceName: 'DevOps-IAC-AzureDevOps-dev'
               providerAzureRmSubscriptionId: '$(subscription_id)'
               allowTelemetryCollection: false
@@ -258,7 +258,7 @@ stages:
             displayName: Terraform Apply
             inputs:
               command: 'apply'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/AppServiceLinux'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/Templates/FunctionApp'
               environmentServiceName: 'DevOps-IAC-AzureDevOps-dev'
               providerAzureRmSubscriptionId: '$(subscription_id)'
               allowTelemetryCollection: false
