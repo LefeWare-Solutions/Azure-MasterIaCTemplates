@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "setup" {
 }
 
 resource "azurerm_storage_account" "sa" {
-  name                     = "${lower(var.prefix)}${lower(terraform.workspace)}${lower(var.storage_account_name)}saterraform${random_integer.sa_num.result}"
+  name                     = "${lower(var.prefix)}${lower(terraform.workspace)}${lower(var.storage_account_name)}${random_integer.sa_num.result}"
   resource_group_name      = azurerm_resource_group.setup.name
   location                 = var.location
   account_tier             = "Standard"
